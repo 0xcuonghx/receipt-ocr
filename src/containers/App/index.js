@@ -2,7 +2,8 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { View, ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import LoginView from '../LoginView';
 // import { useSelector } from 'react-redux';
 // import { REDUX_TYPE, LOADING_TYPE } from './redux/redux-type-saga';
 // import { Record, Collection } from 'immutable';
@@ -10,7 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 // import { sGetIndicatorState } from './redux/selectors';
 import { Screens, routes } from './routes';
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 // const isLoadingSelector = (store: Record<IStore> & Readonly<IStore>) => {
 //   const count: Collection<string, any> = store.getIn([
@@ -20,15 +21,17 @@ const Stack = createStackNavigator();
 //   return !!count || sGetIndicatorState(store);
 // };
 
-const AppContainer = props => {
+export default function AppContainer (props) {
+  // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+
   const [visible, setVisible] = useState(false);
   const isLoading = false;
   // const isLoading = useSelector(isLoadingSelector);
-  // callbacks
+  const isAuthenticated = true;
   const showAlert = useCallback((options) => {
     Snackbar.show(options);
   }, []);
-  // memos
+
   const screenProps = useMemo(() => {
     return {
       setHudVisible: setVisible,
@@ -53,23 +56,21 @@ const AppContainer = props => {
   const NavigationView = useMemo(() => {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={Screens.Home}>
-          {routes.map(route => (<Stack.Screen
+        <Tab.Navigator initialRouteName={Screens.Home}>
+          {routes.map(route => (<Tab.Screen
             key={route.name}
             name={route.name}
             component={route.component}
             options={route.options}
           />))}
-        </Stack.Navigator>
+        </Tab.Navigator>
       </NavigationContainer>
     );
   }, [screenProps]);
   return (
     <React.Fragment>
-      {NavigationView}
+      {isAuthenticated ? NavigationView : <LoginView /> }
       {IndicatorView}
     </React.Fragment>
   );
 };
-
-export default AppContainer;

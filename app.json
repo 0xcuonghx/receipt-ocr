@@ -1,0 +1,12 @@
+{
+  "name": "ReceiptManagement",
+  "displayName": "ReceiptManagement",
+  "expo": {
+    "name": "ReceiptManagement",
+    "slug": "ReceiptManagement",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

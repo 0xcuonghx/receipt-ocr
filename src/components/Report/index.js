@@ -1,24 +1,25 @@
 import React from 'react';
 import moment from 'moment';
-
 import {
   Container, Button, Icon, View, Text
 } from 'native-base';
 import {
   StyleSheet
 } from 'react-native';
+import dataUtils from '../../utils/dateUtils';
 import HeaderCustom from '../Common/HeaderCustom';
+import BarChartReport from './BarChart';
 
 export default function Report() {
-  const currentMonth = React.useMemo(() => moment().startOf('month').unix(), []);
+  const currentMonth = React.useMemo(() => dataUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);
 
   const toggleNextMonth = React.useCallback(() => {
-    setSelectedMonth(moment.unix(selectedMonth).add(1, 'months').startOf('month').unix());
+    setSelectedMonth(dataUtils.getNextMonthByUnix(selectedMonth));
   }, [selectedMonth]);
 
   const togglePreviousMonth = React.useCallback(() => {
-    setSelectedMonth(moment.unix(selectedMonth).subtract(1, 'months').startOf('month').unix());
+    setSelectedMonth(dataUtils.getPreviousMonthByUnix(selectedMonth));
   }, [selectedMonth]);
 
   return (
@@ -36,7 +37,7 @@ export default function Report() {
         )}
         title={(
           <View style={styles.container}>
-            <Text>{currentMonth === selectedMonth ? 'This Month' : moment.unix(selectedMonth).format('MM-YYYY')}</Text>
+            <Text>{currentMonth === selectedMonth ? 'This Month' : moment.unix(selectedMonth).format('MM/YYYY')}</Text>
             <Text numberOfLines={1} note>
               {moment.unix(selectedMonth).startOf('month').format('DD/MM/YYYY')}
               -
@@ -45,7 +46,7 @@ export default function Report() {
           </View>
         )}
       />
-
+      <BarChartReport />
     </Container>
   );
 }

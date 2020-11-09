@@ -1,27 +1,20 @@
 import React from 'react';
 import moment from 'moment';
-
 import {
   Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View
 } from 'native-base';
+import dateUtils from '../../../utils/dateUtils';
+
 import HeaderCustom from '../../Common/HeaderCustom';
 
 export default function ListReceipt() {
-  const currentMonth = React.useMemo(() => moment().startOf('month').unix(), []);
+  const currentMonth = React.useMemo(() => dateUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);
   const [page, setPage] = React.useState(1);
 
   const tabs = React.useMemo(() => {
-    const previousMonth = moment
-      .unix(selectedMonth)
-      .subtract(1, 'months')
-      .startOf('month')
-      .unix();
-    const nextMonth = moment
-      .unix(selectedMonth)
-      .add(1, 'months')
-      .startOf('month')
-      .unix();
+    const previousMonth = dateUtils.getPreviousMonthByUnix(selectedMonth);
+    const nextMonth = dateUtils.getNextMonthByUnix(selectedMonth);
 
     if (selectedMonth === currentMonth) {
       return [
@@ -41,8 +34,8 @@ export default function ListReceipt() {
   const onChangeTab = React.useCallback((params) => {
     const isLeft = params.i === 0;
     const isRight = params.i === 2;
-    const previousMonth = moment.unix(selectedMonth).subtract(1, 'months').startOf('month').unix();
-    const nextMonth = moment.unix(selectedMonth).add(1, 'months').startOf('month').unix();
+    const previousMonth = dateUtils.getPreviousMonthByUnix(selectedMonth);
+    const nextMonth = dateUtils.getNextMonthByUnix(selectedMonth);
 
     if (isLeft) {
       setSelectedMonth(previousMonth);
@@ -62,14 +55,14 @@ export default function ListReceipt() {
   return (
     <Container>
       <HeaderCustom title="Receipt" />
-      <Tabs onChangeTab={onChangeTab} page={page} scrollWithoutAnimation locked>
+      <Tabs onChangeTab={onChangeTab} initialPage={1} page={page} scrollWithoutAnimation locked>
         {tabs.map((tab) => (
           tab.disabled
             ? (
               <Tab key={tab.heading} heading={tab.heading} disabled>
                 <Content>
-                  {[1, 2, 3, 4, 5, 6].map(() => (
-                    <View>
+                  {[1, 2, 3, 4, 5, 6].map((a) => (
+                    <View key={a}>
                       <Separator bordered>
                         <Text>01/02/2020</Text>
                       </Separator>

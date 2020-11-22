@@ -3,11 +3,13 @@ import moment from 'moment';
 import {
   Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View
 } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 import dateUtils from '../../../utils/dateUtils';
 
 import HeaderCustom from '../../Common/HeaderCustom';
 
 export default function ListReceipt() {
+  const navigation = useNavigation();
   const currentMonth = React.useMemo(() => dateUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);
   const [page, setPage] = React.useState(1);
@@ -52,10 +54,20 @@ export default function ListReceipt() {
     setPage(1);
   }, [page]);
 
+  const handleGotoDetail = React.useCallback((receiptId) => {
+    navigation.navigate('Detail', { receiptId });
+  }, [navigation]);
+
   return (
     <Container>
       <HeaderCustom title="Receipt" />
-      <Tabs onChangeTab={onChangeTab} initialPage={1} page={page} scrollWithoutAnimation locked>
+      <Tabs
+        onChangeTab={onChangeTab}
+        initialPage={1}
+        page={page}
+        scrollWithoutAnimation
+        locked
+      >
         {tabs.map((tab) => (
           tab.disabled
             ? (
@@ -66,26 +78,18 @@ export default function ListReceipt() {
                       <Separator bordered>
                         <Text>01/02/2020</Text>
                       </Separator>
-                      <ListItem>
-                        <Body>
-                          <Text note>Merchant</Text>
-                          <Text numberOfLines={1}>Vinmax Co-op</Text>
-                        </Body>
-                        <Right>
-                          <Text note>Total</Text>
-                          <Text>2000 vnd</Text>
-                        </Right>
-                      </ListItem>
-                      <ListItem>
-                        <Body>
-                          <Text note>Merchant</Text>
-                          <Text numberOfLines={1}>Vinmax Co-op</Text>
-                        </Body>
-                        <Right>
-                          <Text note>Total</Text>
-                          <Text>2000 vnd</Text>
-                        </Right>
-                      </ListItem>
+                      {[1, 2].map((o) => (
+                        <ListItem key={o} onPress={() => handleGotoDetail(o)}>
+                          <Body>
+                            <Text note>Merchant</Text>
+                            <Text numberOfLines={1}>Vinmax Co-op</Text>
+                          </Body>
+                          <Right>
+                            <Text note>Total</Text>
+                            <Text>2000 vnd</Text>
+                          </Right>
+                        </ListItem>
+                      ))}
                     </View>
                   ))}
                 </Content>

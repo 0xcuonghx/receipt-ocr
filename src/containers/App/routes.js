@@ -1,56 +1,89 @@
 import React from 'react';
-import { Image } from 'react-native';
-
-import ListReceipt from '../../components/Receipts/List';
+import { Image, StyleSheet } from 'react-native';
+import { View } from 'native-base';
+import Receipt from '../Receipts';
 import Report from '../../components/Report';
 import ListBudget from '../../components/Budgets/List';
 import Setting from '../../components/Setting';
+import UploadModal from '../../components/Upload';
 
+import ReceiptIcon from '../../../assets/images/receipts.png';
+import ReportIcon from '../../../assets/images/report.png';
+import BudgetIcon from '../../../assets/images/budget.png';
+import SettingIcon from '../../../assets/images/setting.png';
+
+function Upload() {
+  return <View />;
+}
 export const Screens = {
   Receipts: 'Receipt',
   Report: 'Report',
   Budgets: 'Budgets',
-  Settings: 'Settings'
-}
+  Settings: 'Settings',
+  Upload: 'Upload'
+};
 export const routes = [
   {
-  name: Screens.Receipts,
-  component: ListReceipt,
-  options: { 
-    tabBarIcon: () => (<Image
-      source={require('../../../assets/images/receipts.png')}
-      style={{width: 24, height: 24}}
-    />) 
-  }
+    name: Screens.Receipts,
+    component: Receipt,
+    options: {
+      tabBarIcon: () => (
+        <Image
+          source={ReceiptIcon}
+          style={styles.image}
+        />
+      )
+    }
   },
   {
     name: Screens.Report,
     component: Report,
-    options: { 
-      tabBarIcon: () => (<Image
-        source={require('../../../assets/images/report.png')}
-        style={{width: 24, height: 24}}
-      />)
-     }
+    options: {
+      tabBarIcon: () => (
+        <Image
+          source={ReportIcon}
+          style={styles.image}
+        />
+      )
+    }
+  },
+  {
+    name: Screens.Upload,
+    component: Upload,
+    options: {
+      tabBarButton: () => (
+        <UploadModal />
+      )
+    }
   },
   {
     name: Screens.Budgets,
     component: ListBudget,
-    options: { 
-      tabBarIcon: () => (<Image
-        source={require('../../../assets/images/budget.png')}
-        style={{width: 24, height: 24}}
-      />)
-     }
+    options: {
+      tabBarIcon: () => (
+        <Image
+          source={BudgetIcon}
+          style={styles.image}
+        />
+      )
+    }
   },
   {
     name: Screens.Settings,
     component: Setting,
-    options: { 
-      tabBarIcon: () => (<Image
-        source={require('../../../assets/images/setting.png')}
-        style={{width: 24, height: 24}}
-      />)
-     }
+    options: {
+      tabBarIcon: () => (
+        <Image
+          source={SettingIcon}
+          style={styles.image}
+        />
+      )
+    }
   }
-]
+];
+
+const styles = StyleSheet.create({
+  image: {
+    width: 24, height: 24
+  },
+});

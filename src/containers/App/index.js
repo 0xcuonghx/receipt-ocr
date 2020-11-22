@@ -1,5 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { View, ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
+import {
+  View, ActivityIndicator, StyleSheet, StatusBar
+} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -21,7 +23,7 @@ const Tab = createBottomTabNavigator();
 //   return !!count || sGetIndicatorState(store);
 // };
 
-export default function AppContainer (props) {
+export default function AppContainer() {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   const [visible, setVisible] = useState(false);
@@ -37,15 +39,17 @@ export default function AppContainer (props) {
       setHudVisible: setVisible,
       showAlert,
     };
-  }, []);
+  }, [showAlert]);
+
   const IndicatorView = useMemo(() => {
     if (visible || isLoading) {
       return (
         <View
           style={[
             StyleSheet.absoluteFill,
-            { backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center' },
-          ]}>
+            styles.loading,
+          ]}
+        >
           <StatusBar barStyle="dark-content" />
           <ActivityIndicator size="large" />
         </View>
@@ -53,24 +57,36 @@ export default function AppContainer (props) {
     }
     return null;
   }, [visible, isLoading]);
+
   const NavigationView = useMemo(() => {
     return (
       <NavigationContainer>
         <Tab.Navigator initialRouteName={Screens.Home}>
-          {routes.map(route => (<Tab.Screen
-            key={route.name}
-            name={route.name}
-            component={route.component}
-            options={route.options}
-          />))}
+          {routes.map((route) => (
+            <Tab.Screen
+              key={route.name}
+              name={route.name}
+              component={route.component}
+              options={route.options}
+            />
+          ))}
         </Tab.Navigator>
       </NavigationContainer>
     );
-  }, [screenProps]);
+  }, []);
+
   return (
-    <React.Fragment>
+    <>
       {isAuthenticated ? NavigationView : <LoginView /> }
       {IndicatorView}
-    </React.Fragment>
+    </>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-color-literals
+  loading: {
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center'
+  }
+});

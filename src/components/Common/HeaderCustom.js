@@ -22,6 +22,6 @@ export default function HeaderCustom({
 
 const styles = StyleSheet.create({
   body: {
-    flex: 6
+    flex: 6,
   },
 });

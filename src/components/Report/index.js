@@ -4,11 +4,12 @@ import {
   Container, Button, Icon, View, Text
 } from 'native-base';
 import {
-  StyleSheet
+  StyleSheet, ScrollView
 } from 'react-native';
 import dataUtils from '../../utils/dateUtils';
 import HeaderCustom from '../Common/HeaderCustom';
 import BarChartReport from './BarChart';
+import PieChartReport from './PieChart';
 
 export default function Report() {
   const currentMonth = React.useMemo(() => dataUtils.getCurrentMonthByUnix(), []);
@@ -46,7 +47,10 @@ export default function Report() {
           </View>
         )}
       />
-      <BarChartReport />
+      <ScrollView>
+        <BarChartReport />
+        <PieChartReport />
+      </ScrollView>
     </Container>
   );
 }

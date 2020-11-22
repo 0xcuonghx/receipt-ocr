@@ -3,22 +3,24 @@
 import React from 'react';
 import {
   Container, Content, List, ListItem, Thumbnail, Text, Left, Body,
-  Right, Button, Icon, Card, CardItem
+  Right, Button, Icon
 } from 'native-base';
 import { StyleSheet, View, Animated } from 'react-native';
-import Modal from 'react-native-modal';
+import { useNavigation } from '@react-navigation/native';
 import IconTest from '../../../../assets/images/budget.png';
 import HeaderCustom from '../../Common/HeaderCustom';
 
 export default function ListBudget() {
-  const [modalVisible, setModalVisible] = React.useState(false);
-
+  const navigation = useNavigation();
+  const navigateToDetails = (budgetId) => {
+    navigation.navigate('Detail', { budgetId });
+  };
   return (
     <Container>
       <HeaderCustom
         title="Budgets"
         right={(
-          <Button transparent onPress={() => setModalVisible(true)}>
+          <Button transparent onPress={() => navigateToDetails(1)}>
             <Icon name="add" type="MaterialIcons" />
           </Button>
         )}
@@ -49,22 +51,6 @@ export default function ListBudget() {
           ))}
         </List>
       </Content>
-      <Modal
-        backdropOpacity={0.1}
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-        style={styles.container}
-      >
-        <View style={styles.content}>
-          <Card>
-            <CardItem>
-              <Left><Button transparent><Text>Cancel</Text></Button></Left>
-              <Text>Add Budget</Text>
-              <Right><Button transparent><Text>Add</Text></Button></Right>
-            </CardItem>
-          </Card>
-        </View>
-      </Modal>
     </Container>
   );
 }
@@ -79,18 +65,5 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 5
-  },
-  content: {
-    backgroundColor: 'white',
-    height: '80%',
-    marginLeft: 10,
-    marginRight: 10,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 10
-  },
-  container: {
-    justifyContent: 'flex-end',
-    margin: 0,
   },
 });

@@ -1,13 +1,40 @@
+/* eslint-disable react-native/no-color-literals */
 import React from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import {
   Button, Icon, View, Text, List, ListItem, Left, Right
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 
 export default function UploadModal() {
   const [modalVisible, setModalVisible] = React.useState(false);
 
+  React.useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const chooseImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+  };
+
+  const captureImage = () => {
+    console.log('expo camera');
+  };
   return (
     <>
       <Button
@@ -24,7 +51,7 @@ export default function UploadModal() {
         <View style={styles.content}>
           <List>
             {['Upload', 'Take Photo'].map((item) => (
-              <ListItem key={item} style={styles.item} onPress={() => console.log('click')}>
+              <ListItem key={item} style={styles.item} onPress={item === 'Upload' ? chooseImage : captureImage}>
                 <Left>
                   <Text>{item}</Text>
                 </Left>
@@ -49,12 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0,
   },
-  // eslint-disable-next-line react-native/no-color-literals
   content: {
     backgroundColor: 'white',
     height: '15%'
   },
-  // eslint-disable-next-line react-native/no-color-literals
   item: {
   }
 });

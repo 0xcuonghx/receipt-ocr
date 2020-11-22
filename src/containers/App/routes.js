@@ -3,7 +3,7 @@ import { Image, StyleSheet } from 'react-native';
 import { View } from 'native-base';
 import Receipt from '../Receipts';
 import Report from '../../components/Report';
-import ListBudget from '../../components/Budgets/List';
+import Budgets from '../Budgets';
 import Setting from '../../components/Setting';
 import UploadModal from '../../components/Upload';
 
@@ -58,7 +58,7 @@ export const routes = [
   },
   {
     name: Screens.Budgets,
-    component: ListBudget,
+    component: Budgets,
     options: {
       tabBarIcon: () => (
         <Image

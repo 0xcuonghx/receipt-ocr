@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Container, Button, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-datepicker';
 import HeaderCustom from '../../Common/HeaderCustom';
@@ -22,6 +22,7 @@ export default function DetailReceipt() {
   }, [navigation]);
 
   const saved = React.useCallback(() => {
+    setEditMode(false);
     AlertCustom({ message: 'Are you sure ?', title: 'Confirm Save' });
   }, []);
 
@@ -54,7 +55,7 @@ export default function DetailReceipt() {
           </View>
           <View>
             <Text>Among</Text>
-            <Input value="2000" style={styles.title} disabled />
+            <Input value="2000" style={styles.title} disabled={!editMode} />
           </View>
         </ListItem>
         <ListItem>
@@ -65,6 +66,7 @@ export default function DetailReceipt() {
             style={styles.categoryPicker}
             placeholder="Select category"
             placeholderIconColor="#007aff"
+            enabled={editMode}
           >
             {[1, 2, 3, 4].map((o) => <Picker.Item key={o} label={o} value={o} />)}
           </Picker>
@@ -81,24 +83,27 @@ export default function DetailReceipt() {
             // maxDate="2016-06-01"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
+            disabled={!editMode}
           />
         </ListItem>
       </List>
-      <List>
-        <ListItem itemHeader>
-          <H3 style={styles.title}>List Products</H3>
-        </ListItem>
-        {[1, 2, 3].map((o) => (
-          <ListItem key={o}>
-            <Left>
-              <Text>Pant</Text>
-            </Left>
-            <Right>
-              <Text>200</Text>
-            </Right>
+      <ScrollView>
+        <List>
+          <ListItem itemHeader>
+            <H3 style={styles.title}>List Products</H3>
           </ListItem>
-        ))}
-      </List>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((o) => (
+            <ListItem key={o}>
+              <Left>
+                <Input value="Pant" disabled={!editMode} />
+              </Left>
+              <Right>
+                <Input value="200" disabled={!editMode} />
+              </Right>
+            </ListItem>
+          ))}
+        </List>
+      </ScrollView>
     </Container>
   );
 }
@@ -119,5 +124,5 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     width: '70%',
-  }
+  },
 });

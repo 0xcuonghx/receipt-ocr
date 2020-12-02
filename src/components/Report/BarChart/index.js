@@ -27,6 +27,7 @@ export default function BarChartReport() {
         height={Dimensions.get('window').height * 0.3}
         yAxisLabel="$"
         chartConfig={{
+          data: [],
           backgroundColor: '#1cc910',
           backgroundGradientFrom: '#eff3ff',
           backgroundGradientTo: '#efefef',

@@ -9,3 +9,5 @@ chmod 755 android/gradlew
 1. app react native debugger
 
 # debugger redux
+
+command + d => debug

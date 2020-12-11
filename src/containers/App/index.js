@@ -1,90 +1,80 @@
-import React, { useMemo, useState, useCallback } from 'react';
+/* eslint-disable react-native/no-color-literals */
+import React, { useMemo } from 'react';
 import {
   View, ActivityIndicator, StyleSheet, StatusBar
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useSelector, useDispatch } from 'react-redux';
 import LoginView from '../LoginView';
-// import { useSelector } from 'react-redux';
-// import { REDUX_TYPE, LOADING_TYPE } from './redux/redux-type-saga';
-// import { Record, Collection } from 'immutable';
-// import { IStore } from './redux/redux-state';
-// import { sGetIndicatorState } from './redux/selectors';
 import { Screens, routes } from './routes';
+import { clearSnackBar } from '../../store/reducers/ui.reducer';
 
 const Tab = createBottomTabNavigator();
 
-// const isLoadingSelector = (store: Record<IStore> & Readonly<IStore>) => {
-//   const count: Collection<string, any> = store.getIn([
-//     REDUX_TYPE,
-//     LOADING_TYPE,
-//   ]);
-//   return !!count || sGetIndicatorState(store);
-// };
-
 export default function AppContainer() {
-  // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  const dispatch = useDispatch();
 
-  const [visible, setVisible] = useState(false);
-  const isLoading = false;
-  // const isLoading = useSelector(isLoadingSelector);
-  const isAuthenticated = true;
-  const showAlert = useCallback((options) => {
-    Snackbar.show(options);
-  }, []);
+  const isLoading = useSelector((state) => state.uiReducer.loading);
+  const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticate);
+  const error = useSelector((state) => state.uiReducer.error);
+  const message = useSelector((state) => state.uiReducer.message);
 
-  const screenProps = useMemo(() => {
-    return {
-      setHudVisible: setVisible,
-      showAlert,
-    };
-  }, [showAlert]);
-
-  const IndicatorView = useMemo(() => {
-    if (visible || isLoading) {
-      return (
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            styles.loading,
-          ]}
-        >
-          <StatusBar barStyle="dark-content" />
-          <ActivityIndicator size="large" />
-        </View>
-      );
+  React.useEffect(() => {
+    if (error) {
+      Snackbar.show({
+        text: error,
+        duration: Snackbar.LENGTH_SHORT,
+      });
     }
-    return null;
-  }, [visible, isLoading]);
+    if (message) {
+      Snackbar.show({
+        text: message,
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    }
+    dispatch(clearSnackBar());
+  }, [error, message, dispatch]);
 
-  const NavigationView = useMemo(() => {
-    return (
-      <NavigationContainer>
-        <Tab.Navigator initialRouteName={Screens.Home}>
-          {routes.map((route) => (
-            <Tab.Screen
-              key={route.name}
-              name={route.name}
-              component={route.component}
-              options={route.options}
-            />
-          ))}
-        </Tab.Navigator>
-      </NavigationContainer>
-    );
-  }, []);
+  const IndicatorView = useMemo(() => (
+    <View
+      style={[
+        StyleSheet.absoluteFill,
+        styles.loading,
+      ]}
+    >
+      <StatusBar barStyle="dark-content" />
+      <ActivityIndicator size="large" />
+    </View>
+  ),
+  []);
+
+  const NavigationView = useMemo(() => (
+    <NavigationContainer>
+      <Tab.Navigator initialRouteName={Screens.Home}>
+        {routes.map((route) => (
+          <Tab.Screen
+            key={route.name}
+            name={route.name}
+            component={route.component}
+            options={route.options}
+          />
+        ))}
+      </Tab.Navigator>
+    </NavigationContainer>
+  ),
+  []);
 
   return (
     <>
       {isAuthenticated ? NavigationView : <LoginView /> }
-      {IndicatorView}
+      {isLoading && IndicatorView}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  // eslint-disable-next-line react-native/no-color-literals
   loading: {
     backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center'

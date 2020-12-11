@@ -1,12 +1,53 @@
-
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react-native/no-color-literals */
 import React from 'react';
-import { Text, View, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+
+import {
+  Text, View, Image, StyleSheet, SafeAreaView, TouchableOpacity
+} from 'react-native';
 import logoImg from '../../../assets/images/logo.png';
+import { getCurrentUser, login } from '../../store/asyncActions/user.actions';
+
+export default function LoginView() {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
+  const onPressLogin = React.useCallback(async () => {
+    dispatch(login());
+  }, [dispatch]);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.logo}
+          source={logoImg}
+        />
+        <Text style={styles.title}>
+          Welcome to receipt management
+        </Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPressLogin}
+          style={styles.button}
+        >
+          <Text style={styles.appButtonText}>Login with Google</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "cornflowerblue"
+    backgroundColor: 'cornflowerblue'
   },
   logo: {
     width: 80,
@@ -18,7 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: 20,
     fontSize: 24,
-    width: "80%",
+    width: '80%',
     textAlign: 'center'
   },
   buttonContainer: {
@@ -44,32 +85,3 @@ const styles = StyleSheet.create({
     fontSize: 15
   }
 });
-
-export default function LoginView () {
-  const onPressLogin = React.useCallback(() => {
-    console.log("login")
-  }, []);
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.logo}
-          source={logoImg}
-        />
-        <Text style={styles.title}>
-          Welcome to receipt management
-        </Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          activeOpacity={0.8}
-          onPress={onPressLogin}
-          style={styles.button}
-        >
-          <Text style={styles.appButtonText}>Login with Google</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  );
-}
-

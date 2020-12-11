@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "accessToken": "ya29.a0AfH6SMCSrnOCcjihzYpzSwLqxowhAN-p1ElVyRR3NyZOX_31d6xGudTdpf-SxwMywx7eRfbqKmpv4oxcTjUnTrUwL418uB30OMoF0DP2myD-wJFLwQK7Q07sITsd-riAG45Z75Rp4PeZQoawzRD8Tq46iOpH5bZwuRCAITJFuypd",
+    "accessTokenExpirationDate": 3598.995547056198,
+    "clientId": "751216151427-rekmejfdmcl3tel94ntthgmch5qdont5.apps.googleusercontent.com",
+    "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ0Y2JhMjVlNTYzNjYwYTkwMDlkODIwYTFjMDIwMjIwNzA1NzRlODIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI3NTEyMTYxNTE0MjctcmVrbWVqZmRtY2wzdGVsOTRudHRoZ21jaDVxZG9udDUuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI3NTEyMTYxNTE0MjctcmVrbWVqZmRtY2wzdGVsOTRudHRoZ21jaDVxZG9udDUuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUzMDMwMTcxNzkwNDczNzAwMDUiLCJlbWFpbCI6ImN1b25nMTE4MTk5OEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Inh4QXhoQ2dnMXF4N2ZhMnBQWEZhVVEiLCJuYW1lIjoiWHXDom4gQ8aw4budbmcgSOG7kyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQU9oMTRHaG5MWXNUa3IxUFItTUlxbWt4b3lpWVQxQWVadUZTc0x4Umt3WUtYZz1zOTYtYyIsImdpdmVuX25hbWUiOiJYdcOibiBDxrDhu51uZyIsImZhbWlseV9uYW1lIjoiSOG7kyIsImxvY2FsZSI6InZpIiwiaWF0IjoxNjA3NzA0MzM2LCJleHAiOjE2MDc3MDc5MzZ9.pm6CDLrfxyaFax3yqTcugqk4fo1yqoaODTMvpU_TMAwn7TJCPrfLWxFF27TggYdczxlkvjZqJwj5Hjni8LPc6wgpLqWGXePMP08O8N2LSfgROZ_nHOaWMpjlEcbIK6A6eY9PQaxgUcAU0RMj1SFWdmvdbM2ehV3tZPkqulSDbglZZcogC2pFW0kSzTMC6vDa5nJFzdPtDU4ICnNRmvyMLyuGKAi_PxAT0r4g5lem0d3QTN4X0v2Ln6eh4Hda8CZ0q2XBElee15IRECYGBO6rfmslnKzIFZlL_tQ--RpfcE77QWeGAZRHlUjP0O7MO71WuFm2oeivu8aTir2L7kl1Jw",
+    "idTokenExpirationDate": 3598.8189259767532,
+    "refreshToken": "1//0e6NNMsEXjumuCgYIARAAGA4SNwF-L9Iroj1KZuU1ua_ziSXLsZd0Mt50EsMryc1NRSUiSfAOj07Q37czDfweq4S_VhWnvCJ_kJ4"
+  },
+  "displayName": "Xuân Cường Hồ",
+  "email": "cuong1181998@gmail.com",
+  "firstName": "Xuân Cường",
+  "hostedDomain": "undefined",
+  "lastName": "Hồ",
+  "photoURL": "https://lh3.googleusercontent.com/a-/AOh14GhnLYsTkr1PR-MIqmkxoyiYT1AeZuFSsLxRkwYKXg=s128",
+  "scopes": [
+    "openid",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ],
+  "serverAuthCode": null,
+  "uid": "115303017179047370005"
+}

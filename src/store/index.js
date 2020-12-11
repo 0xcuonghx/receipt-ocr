@@ -3,14 +3,17 @@ import {
 } from '@reduxjs/toolkit';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import thunk from 'redux-thunk';
 
 import userReducer, { initialState as userInitialState } from './reducers/users.reducer';
 import budgetReducer, { initialState as budgetInitialState } from './reducers/budgets.reducer';
+import uiReducer, { initialState as uiInitialState } from './reducers/ui.reducer';
 
 export const initialRootState = {
   userReducer: userInitialState,
-  budgetReducer: budgetInitialState
+  budgetReducer: budgetInitialState,
+  uiReducer: uiInitialState
 };
 
 export default function configureStore(
@@ -26,7 +29,8 @@ export default function configureStore(
 
   const rootReducer = combineReducers({
     userReducer,
-    budgetReducer
+    budgetReducer,
+    uiReducer
   });
 
   return createStore(rootReducer, preloadedState, composedEnhancers);

@@ -1,13 +1,23 @@
+/* eslint-disable react-native/no-color-literals */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Container, Content, Thumbnail, Text, View, List, ListItem, Left, Right, Icon, Button
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import {
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
+
 import HeaderCustom from '../Common/HeaderCustom';
 import IconTest from '../../../assets/images/budget.png';
 import SelectPicker from './SelectPicker';
+import { logout } from '../../store/asyncActions/user.actions';
 
 export default function Setting() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer.user);
+
   const moneyOption = [
     { label: 'vnđ', key: 'VND' },
     { label: '$', key: 'DOLLAR' },
@@ -24,13 +34,19 @@ export default function Setting() {
     { label: 'English', key: 'eng' },
     { label: 'Việt Nam', key: 'vie' },
   ];
+
+  const onLogout = React.useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
+
   return (
     <Container>
       <HeaderCustom title="Setting" />
       <Content>
         <View style={styles.avatar}>
-          <Thumbnail large source={IconTest} />
-          <Text>cuong1181998@gmail.com</Text>
+          <Thumbnail large source={{ uri: user.photoURL }} />
+          <Text>{user.email}</Text>
+          <Text>{user.displayName}</Text>
         </View>
         <View
           style={styles.divider}
@@ -60,6 +76,15 @@ export default function Setting() {
           ))}
         </List>
       </Content>
+      <View style={styles.logoutContainer}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onLogout}
+          style={styles.logoutButton}
+        >
+          <Text style={styles.logoutText}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
     </Container>
   );
 }
@@ -72,7 +97,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 30
   },
-  // eslint-disable-next-line react-native/no-color-literals
   divider: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
@@ -82,5 +106,22 @@ const styles = StyleSheet.create({
   },
   right: {
     flex: 1
+  },
+  logoutContainer: {
+    flex: 0.1,
+    alignItems: 'center',
+  },
+  logoutText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  logoutButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ff7675',
+    width: '80%',
+    padding: 15,
+    borderRadius: 20
   }
 });

@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   loading: false,
-  error: undefined,
-  message: undefined
+  error: null,
+  message: null
 };
 
 const uiSlice = createSlice({
@@ -16,9 +16,18 @@ const uiSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
+    clearSnackBar: (state) => {
+      state.error = null;
+      state.message = null;
     }
   },
 });
 
-export const { setLoading, setError } = uiSlice.actions;
+export const {
+  setLoading, setError, setMessage, clearSnackBar
+} = uiSlice.actions;
 export default uiSlice.reducer;

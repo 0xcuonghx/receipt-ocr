@@ -26,4 +26,7 @@ axiosInstance.interceptors.response.use((response) => {
   if (error.status === 401) {
     // authentication fail
   }
+  return Promise.reject(error);
 });
+
+export default axiosInstance;

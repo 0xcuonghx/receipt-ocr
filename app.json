@@ -2,6 +2,15 @@
   "name": "ReceiptManagement",
   "displayName": "ReceiptManagement",
   "expo": {
+    "ios": {
+      "bundleIdentifier": "org.name.ReceiptManagement",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.751216151427-rekmejfdmcl3tel94ntthgmch5qdont5"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
     "name": "ReceiptManagement",
     "slug": "ReceiptManagement",
     "version": "1.0.0",

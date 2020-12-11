@@ -1,15 +1,15 @@
 /* eslint-disable import/prefer-default-export */
 import { getListBudgetsSuccess } from '../reducers/budgets.reducer';
 import { setError, setLoading } from '../reducers/ui.reducer';
+import axiosInstance from '../../axiosInstance';
+import routeEnum from '../../axiosInstance/apiRoute';
 
 export const fetchListBudgets = (
   params
 ) => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    // TODO: axios call
-    // const budgets = await ;
-    const budgets = [];
+    const budgets = await axiosInstance.get(routeEnum.BUDGETS, { params });
     dispatch(setLoading(false));
     dispatch(getListBudgetsSuccess(budgets));
   } catch (error) {

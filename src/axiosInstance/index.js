@@ -5,7 +5,6 @@ import { AccessToken, BackendUrl } from '../constraint';
 const axiosInstance = axios.create({
   baseURL: BackendUrl,
   headers: {
-    // Authorization: `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
   },
   timeout: 60000
@@ -18,7 +17,7 @@ axiosInstance.interceptors.request.use(async (config) => {
     ...config,
     headers: {
       ...config.headers,
-      Authorization: `Bearer ${accessToken}`
+      Authorization: accessToken
     }
   };
   return newConfig;

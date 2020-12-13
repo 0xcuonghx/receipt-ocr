@@ -9,10 +9,11 @@ export const getCurrentUser = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
     await GoogleSignIn.initAsync({ clientId });
-    const payload = await GoogleSignIn.signInSilentlyAsync();
+    const user = await GoogleSignIn.signInSilentlyAsync();
     dispatch(setLoading(false));
-    if (payload) {
-      dispatch(loginSuccess(payload));
+    if (user) {
+      dispatch(loginSuccess(user));
+      await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
     }
   } catch (error) {
     dispatch(setLoading(false));

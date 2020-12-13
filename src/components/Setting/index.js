@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import HeaderCustom from '../Common/HeaderCustom';
-import IconTest from '../../../assets/images/budget.png';
 import SelectPicker from './SelectPicker';
 import { logout } from '../../store/asyncActions/user.actions';
 

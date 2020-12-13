@@ -2,13 +2,13 @@
 import * as GoogleSignIn from 'expo-google-sign-in';
 import { loginSuccess, logoutSuccess } from '../reducers/users.reducer';
 import { setError, setLoading } from '../reducers/ui.reducer';
-
-const CLIENT_ID = '751216151427-rekmejfdmcl3tel94ntthgmch5qdont5.apps.googleusercontent.com';
+import asyncStorageUtils from '../../utils/asyncStorageUtils';
+import { AccessToken, clientId } from '../../constraint';
 
 export const getCurrentUser = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    await GoogleSignIn.initAsync({ clientId: CLIENT_ID });
+    await GoogleSignIn.initAsync({ clientId });
     const payload = await GoogleSignIn.signInSilentlyAsync();
     dispatch(setLoading(false));
     if (payload) {
@@ -26,6 +26,7 @@ export const login = () => async (dispatch) => {
     if (type === 'success') {
       dispatch(setLoading(false));
       dispatch(loginSuccess(user));
+      await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
     }
   } catch (error) {
     dispatch(setLoading(false));
@@ -37,6 +38,7 @@ export const logout = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
     await GoogleSignIn.signOutAsync();
+    await asyncStorageUtils.removeItem(AccessToken);
     dispatch(setLoading(false));
     dispatch(logoutSuccess());
   } catch (error) {

@@ -43,9 +43,9 @@ export default function Setting() {
       <HeaderCustom title="Setting" />
       <Content>
         <View style={styles.avatar}>
-          <Thumbnail large source={{ uri: user.photoURL }} />
-          <Text>{user.email}</Text>
-          <Text>{user.displayName}</Text>
+          {user.photoURL && <Thumbnail large source={{ uri: user.photoURL }} />}
+          <Text>{user?.email || ''}</Text>
+          <Text>{user?.displayName || ''}</Text>
         </View>
         <View
           style={styles.divider}

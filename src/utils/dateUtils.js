@@ -20,8 +20,25 @@ function getPreviousMonthByUnix(unix) {
     .unix();
 }
 
+function isoStartOfMonth() {
+  return moment().startOf('month').toISOString();
+}
+function isoEndOfMonth() {
+  return moment().endOf('month').toISOString();
+}
+
+function isoToDate(iso) {
+  try {
+    return moment(iso).format('DD-MM-YYYY');
+  } catch (error) {
+    return 'NaN';
+  }
+}
 export default {
   getCurrentMonthByUnix,
   getNextMonthByUnix,
-  getPreviousMonthByUnix
+  getPreviousMonthByUnix,
+  isoStartOfMonth,
+  isoEndOfMonth,
+  isoToDate
 };

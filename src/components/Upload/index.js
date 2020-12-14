@@ -6,8 +6,10 @@ import {
 } from 'native-base';
 import { StyleSheet, Platform } from 'react-native';
 import Modal from 'react-native-modal';
+import { useNavigation } from '@react-navigation/native';
 
 export default function UploadModal() {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
@@ -33,7 +35,22 @@ export default function UploadModal() {
   };
 
   const captureImage = () => {
-    console.log('expo camera');
+
+  };
+
+  const addByHand = () => {
+    navigation.navigate('Receipt', { screen: 'Add' });
+  };
+  const handlePress = (item) => {
+    if (item === 'Upload') {
+      chooseImage();
+    }
+    if (item === 'Take Photo') {
+      captureImage();
+    }
+    if (item === 'Add Receipt') {
+      addByHand();
+    }
   };
   return (
     <>
@@ -50,8 +67,8 @@ export default function UploadModal() {
       >
         <View style={styles.content}>
           <List>
-            {['Upload', 'Take Photo'].map((item) => (
-              <ListItem key={item} style={styles.item} onPress={item === 'Upload' ? chooseImage : captureImage}>
+            {['Upload', 'Take Photo', 'Add Receipt'].map((item) => (
+              <ListItem key={item} style={styles.item} onPress={() => handlePress(item)}>
                 <Left>
                   <Text>{item}</Text>
                 </Left>
@@ -60,7 +77,8 @@ export default function UploadModal() {
                   && <Icon type="MaterialIcons" name="add-to-photos" />}
                   {item === 'Take Photo'
                   && <Icon type="MaterialIcons" name="add-a-photo" />}
-
+                  {item === 'Add Receipt'
+                  && <Icon type="MaterialIcons" name="add" />}
                 </Right>
               </ListItem>
             ))}
@@ -78,7 +96,7 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: 'white',
-    height: '15%'
+    height: '20%'
   },
   item: {
   }

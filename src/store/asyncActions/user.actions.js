@@ -1,9 +1,21 @@
 /* eslint-disable import/prefer-default-export */
 import * as GoogleSignIn from 'expo-google-sign-in';
+import axiosInstance from '../../axiosInstance';
+
+import asyncStorageUtils from '../../utils/asyncStorageUtils';
+import routeEnum from '../../axiosInstance/apiRoute';
 import { loginSuccess, logoutSuccess } from '../reducers/users.reducer';
 import { setError, setLoading } from '../reducers/ui.reducer';
-import asyncStorageUtils from '../../utils/asyncStorageUtils';
 import { AccessToken, clientId } from '../../constraint';
+
+export const createUser = (user) => async (dispatch) => {
+  try {
+    // TODO: create user
+    await axiosInstance.post(routeEnum.CREATE_USER, { user });
+  } catch (error) {
+    dispatch(setError('create user fail!'));
+  }
+};
 
 export const getCurrentUser = () => async (dispatch) => {
   try {
@@ -28,6 +40,7 @@ export const login = () => async (dispatch) => {
       dispatch(setLoading(false));
       dispatch(loginSuccess(user));
       await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
+      dispatch(createUser(user));
     }
   } catch (error) {
     dispatch(setLoading(false));

@@ -26,12 +26,16 @@ export default function AppContainer() {
       Snackbar.show({
         text: error,
         duration: Snackbar.LENGTH_SHORT,
+        textColor: '#d63031',
+        backgroundColor: '#2d3436'
       });
     }
     if (message) {
       Snackbar.show({
         text: message,
         duration: Snackbar.LENGTH_SHORT,
+        textColor: '#0984e3',
+        backgroundColor: '#2d3436'
       });
     }
     dispatch(clearSnackBar());

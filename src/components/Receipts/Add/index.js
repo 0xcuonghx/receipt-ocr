@@ -3,82 +3,46 @@ import React from 'react';
 import {
   Container, Button, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
 } from 'native-base';
-
+import moment from 'moment';
 import { StyleSheet, ScrollView } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-datepicker';
+import { useNavigation } from '@react-navigation/native';
 import HeaderCustom from '../../Common/HeaderCustom';
 import AlertCustom from '../../Common/Alert';
 import IconMoney from '../../../../assets/images/money.png';
-import dateUtils from '../../../utils/dateUtils';
 
-export default function DetailReceipt(props) {
+export default function AddReceipt(props) {
   const {
-    data = {}, onDelete, getDetail, categories = [], onUpdate
+    categories = [], onAdd
   } = props;
-  const route = useRoute();
   const navigation = useNavigation();
-  const { receiptId } = route.params;
 
-  const getCategoryId = React.useCallback(
-    (name) => categories.find((o) => o.name === name)?.id,
-    [categories]
-  );
-
-  const [editMode, setEditMode] = React.useState(false);
   const [detail, setDetail] = React.useState({
-    id: data.id,
-    purchaseDate: dateUtils.isoToDate(data.purchaseDate) || '',
-    merchant: data.merchant || '',
-    category_id: getCategoryId(data.category) || '',
-    total: `${data.total || 0}`,
-    products: data.products || [],
-    url_image: data.url_image || ''
+    purchaseDate: moment().format('DD-MM-YYYY'),
+    merchant: 'merchant',
+    category_id: '',
+    total: '0',
+    products: [],
+    url_image: ''
   });
-  const backToList = React.useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
 
   const saved = React.useCallback(() => {
-    setEditMode(false);
     AlertCustom({
       message: 'Are you sure ?',
       title: 'Confirm Save',
       onOk: () => {
-        onUpdate(detail);
+        onAdd(detail);
+        backToList();
       }
     });
-  }, [onUpdate, detail]);
+  }, [onAdd, detail, backToList]);
 
-  const deleted = React.useCallback(() => {
-    AlertCustom({
-      message: 'Are you sure ?',
-      title: 'Confirm Deleted',
-      onOk: () => {
-        onDelete(receiptId);
-        navigation.goBack();
-      }
-    });
-  }, [onDelete, receiptId, navigation]);
-
-  const rightHeader = React.useMemo(() => (editMode ? (
+  const rightHeader = React.useMemo(() => (
     <Button transparent onPress={saved}>
       <Icon type="MaterialIcons" name="done" />
     </Button>
-  ) : (
-    <>
-      <Button transparent onPress={() => setEditMode(true)}>
-        <Icon type="MaterialIcons" name="create" />
-      </Button>
-      <Button transparent onPress={deleted}>
-        <Icon type="MaterialIcons" name="delete" />
-      </Button>
-    </>
-  )), [editMode, saved, deleted]);
-
-  React.useEffect(() => {
-    getDetail(receiptId);
-  }, [receiptId, getDetail]);
+  ),
+  [saved]);
 
   const updateField = React.useCallback((key, value) => {
     setDetail((old) => ({ ...old, [key]: value }));
@@ -99,10 +63,14 @@ export default function DetailReceipt(props) {
     }
   }, [updateField, detail]);
 
+  const backToList = React.useCallback(() => {
+    navigation.navigate('List');
+  }, [navigation]);
+
   return (
     <Container>
       <HeaderCustom
-        title="Detail"
+        title="Add Receipt"
         left={(
           <Button transparent onPress={backToList}>
             <Icon name="arrow-back" />
@@ -122,16 +90,17 @@ export default function DetailReceipt(props) {
               keyboardType="numeric"
               value={detail.total}
               style={styles.title}
-              disabled={!editMode}
               onChangeText={(value) => updateField('total', value)}
             />
           </View>
         </ListItem>
         <ListItem>
-          <Text>Merchant</Text>
+          <Text style={styles.merchantTitle}>
+            Merchant
+
+          </Text>
           <Input
             value={detail.merchant}
-            disabled={!editMode}
             onChangeText={(value) => updateField('merchant', value)}
           />
         </ListItem>
@@ -143,7 +112,6 @@ export default function DetailReceipt(props) {
             style={styles.categoryPicker}
             placeholder="Select category"
             placeholderIconColor="#007aff"
-            enabled={editMode}
             selectedValue={detail.category_id}
             onValueChange={(value) => updateField('category_id', value)}
           >
@@ -166,7 +134,6 @@ export default function DetailReceipt(props) {
             format="DD-MM-YYYY"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
-            disabled={!editMode}
             onDateChange={(value) => updateField('purchaseDate', value)}
           />
         </ListItem>
@@ -175,33 +142,28 @@ export default function DetailReceipt(props) {
         <List>
           <ListItem itemHeader>
             <H3 style={styles.title}>List Products</H3>
-            {editMode
-            && <Icon type="MaterialIcons" name="add" onPress={() => updateProducts('add')} />}
+            <Icon type="MaterialIcons" name="add" onPress={() => updateProducts('add')} />
           </ListItem>
           {(detail.products || []).map((o, index) => (
             <ListItem key={index.toString()}>
               <Left>
                 <Input
                   value={o?.name || ''}
-                  disabled={!editMode}
                   onChangeText={(value) => updateProducts('update', index, { ...o, name: value })}
                 />
               </Left>
               <Right>
                 <Input
                   keyboardType="numeric"
-                  value={`${o?.price || 0}`}
-                  disabled={!editMode}
+                  value={`${o?.price || ''}`}
                   onChangeText={(value) => updateProducts('update', index, { ...o, price: value })}
                 />
               </Right>
-              {editMode && (
               <Icon
                 type="MaterialIcons"
                 name="delete"
                 onPress={() => updateProducts('delete', index,)}
               />
-              )}
             </ListItem>
           ))}
         </List>
@@ -224,6 +186,9 @@ const styles = StyleSheet.create({
   },
   categoryPicker: {
     width: '70%',
+  },
+  merchantTitle: {
+    width: '30%',
   },
   datePicker: {
     width: '70%',

@@ -26,18 +26,15 @@ axiosInstance.interceptors.request.use(async (config) => {
 // do something when response
 axiosInstance.interceptors.response.use((response) => {
   // if status code 2xx
-  if (response.status === 200) {
-    console.log('Api Success:', response.data);
-    return response.data;
+  if (response.status === 200 && response.data.message === 'successful') {
+    return response.data.result;
   }
-
-  return response;
+  return Promise.reject(Error('Something went wrong'));
 }, (error) => {
   // do something if status code outside 2xx
   if (error.status === 401) {
     // authentication fail
   }
-  console.log('Network Error:', JSON.stringify(error));
   return Promise.reject(error);
 });
 

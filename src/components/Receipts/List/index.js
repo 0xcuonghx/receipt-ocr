@@ -1,14 +1,16 @@
 import React from 'react';
 import moment from 'moment';
 import {
-  Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View
+  Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View, Thumbnail, Left
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import dateUtils from '../../../utils/dateUtils';
 
 import HeaderCustom from '../../Common/HeaderCustom';
+import ImageDefault from '../../../../assets/images/logo.png';
 
-export default function ListReceipt() {
+export default function ListReceipt(props) {
+  const { data = {}, fetchReceipts } = props;
   const navigation = useNavigation();
   const currentMonth = React.useMemo(() => dateUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);
@@ -54,9 +56,19 @@ export default function ListReceipt() {
     setPage(1);
   }, [page]);
 
+  React.useEffect(() => {
+    fetchReceipts({
+      fromDate: moment.unix(selectedMonth).startOf('month').toISOString(),
+      toDate: moment.unix(selectedMonth).endOf('month').toISOString()
+    });
+  }, [selectedMonth, fetchReceipts]);
   const handleGotoDetail = React.useCallback((receiptId) => {
     navigation.navigate('Detail', { receiptId });
   }, [navigation]);
+
+  React.useEffect(() => {
+    fetchReceipts();
+  }, [fetchReceipts]);
 
   return (
     <Container>
@@ -73,20 +85,30 @@ export default function ListReceipt() {
             ? (
               <Tab key={tab.heading} heading={tab.heading} disabled>
                 <Content>
-                  {[1, 2, 3, 4, 5, 6].map((a) => (
-                    <View key={a}>
+                  {Object.keys(data).map((key) => (
+                    <View key={key}>
                       <Separator bordered>
-                        <Text>01/02/2020</Text>
+                        <Text>{key}</Text>
                       </Separator>
-                      {[1, 2].map((o) => (
-                        <ListItem key={o} onPress={() => handleGotoDetail(o)}>
+                      {(data[key] || []).map((o) => (
+                        <ListItem avatar key={o.id} onPress={() => handleGotoDetail(o.id)}>
+                          <Left>
+                            <Thumbnail
+                              small
+                              source={
+                                o.url_image ? { uri: o.url_image } : ImageDefault
+                              }
+                            />
+                          </Left>
                           <Body>
                             <Text note>Merchant</Text>
-                            <Text numberOfLines={1}>Vinmax Co-op</Text>
+                            <Text numberOfLines={1}>{o.merchant}</Text>
                           </Body>
                           <Right>
                             <Text note>Total</Text>
-                            <Text>2000 vnd</Text>
+                            <Text>
+                              {`${o.total} VND`}
+                            </Text>
                           </Right>
                         </ListItem>
                       ))}

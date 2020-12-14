@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   data: [],
-  receiptsByBudget: [],
   detail: {}
 };
 
@@ -13,9 +12,6 @@ const budgetSlice = createSlice({
   reducers: {
     getListBudgetsSuccess: (state, action) => {
       state.data = action.payload;
-    },
-    getReceiptsByBudgetSuccess: (state, action) => {
-      state.receiptsByBudget = action.payload;
     },
     editBudgetSuccess: (state, action) => {
       state.detail = action.payload;
@@ -28,7 +24,6 @@ const budgetSlice = createSlice({
 
 export const {
   getListBudgetsSuccess,
-  getReceiptsByBudgetSuccess,
   editBudgetSuccess,
   createBudgetSuccess
 } = budgetSlice.actions;

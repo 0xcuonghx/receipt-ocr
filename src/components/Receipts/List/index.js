@@ -66,10 +66,6 @@ export default function ListReceipt(props) {
     navigation.navigate('Detail', { receiptId });
   }, [navigation]);
 
-  React.useEffect(() => {
-    fetchReceipts();
-  }, [fetchReceipts]);
-
   return (
     <Container>
       <HeaderCustom title="Receipt" />

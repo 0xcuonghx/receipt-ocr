@@ -11,7 +11,10 @@ import HeaderCustom from '../Common/HeaderCustom';
 import BarChartReport from './BarChart';
 import PieChartReport from './PieChart';
 
-export default function Report() {
+export default function Report(props) {
+  const {
+    fetchByWeek, fetchByCategory, dataByWeek, dataByCategory
+  } = props;
   const currentMonth = React.useMemo(() => dataUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);
 
@@ -23,6 +26,40 @@ export default function Report() {
     setSelectedMonth(dataUtils.getPreviousMonthByUnix(selectedMonth));
   }, [selectedMonth]);
 
+  React.useEffect(() => {
+    fetchByWeek({
+      fromDate: moment.unix(selectedMonth).startOf('month').toISOString(),
+      toDate: moment.unix(selectedMonth).endOf('month').toISOString()
+    });
+    fetchByCategory({
+      fromDate: moment.unix(selectedMonth).startOf('month').toISOString(),
+      toDate: moment.unix(selectedMonth).endOf('month').toISOString()
+    });
+  }, [selectedMonth, fetchByWeek, fetchByCategory]);
+
+  const barData = React.useMemo(() => {
+    const labels = dataByWeek.map((o) => o.name);
+    const data = dataByWeek.map((o) => o.among);
+
+    return {
+      labels,
+      datasets: [
+        {
+          data
+        }
+      ]
+    };
+  }, [dataByWeek]);
+
+  const colorRandom = React.useCallback(
+    // eslint-disable-next-line no-bitwise
+    () => `#${((1 << 24) * Math.random() | 0).toString(16)}`,
+    []
+  );
+  const pieData = React.useMemo(
+    () => dataByCategory.map((o) => ({ name: o.category, value: o.among, color: colorRandom() })),
+    [dataByCategory, colorRandom]
+  );
   return (
     <Container>
       <HeaderCustom
@@ -48,8 +85,8 @@ export default function Report() {
         )}
       />
       <ScrollView>
-        <BarChartReport />
-        <PieChartReport />
+        <BarChartReport data={barData} />
+        <PieChartReport data={pieData} />
       </ScrollView>
     </Container>
   );

@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 // do something when response
 axiosInstance.interceptors.response.use((response) => {
   // if status code 2xx
-  if (response.status === 200 && response.data.message === 'successful') {
+  if (response.status === 200 && (response.data.message === 'successful' || 'success')) {
     return response.data.result;
   }
   return Promise.reject(Error('Something went wrong'));

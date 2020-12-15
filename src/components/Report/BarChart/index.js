@@ -5,9 +5,9 @@ import {
   BarChart,
 } from 'react-native-chart-kit';
 
-export default function BarChartReport() {
+export default function BarChartReport(props) {
 
-  const data = {
+  const defaultData = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [
       {
@@ -15,6 +15,8 @@ export default function BarChartReport() {
       }
     ]
   };
+
+  const { data = defaultData } = props;
 
   return (
     <View>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { View } from 'native-base';
 import Receipt from '../Receipts';
-import Report from '../../components/Report';
+import Report from '../Report';
 import Budgets from '../Budgets';
 import Setting from '../Setting';
 import UploadModal from '../../components/Upload';

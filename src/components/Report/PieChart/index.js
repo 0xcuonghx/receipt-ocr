@@ -5,51 +5,18 @@ import {
   PieChart,
 } from 'react-native-chart-kit';
 
-export default function PieChartReport() {
-
-  const data = [
-    {
-      name: 'Seoul',
-      population: 21500000,
-      color: 'rgba(131, 167, 234, 1)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Toronto',
-      population: 2800000,
-      color: '#F00',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-
-    {
-      name: 'Moscow',
-      population: 11920000,
-      color: 'rgb(0, 0, 255)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Moscow',
-      population: 11920000,
-      color: 'rgb(0, 221, 122)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-
-  ];
+export default function PieChartReport({ data }) {
 
   const Note = React.useMemo(() => (
     <View style={styles.note}>
       {data.map((item) => (
-        <>
+        <View key={item.name} style={styles.noteDiv}>
           <View style={{ ...styles.circle, backgroundColor: item.color }} />
           <Text style={styles.noteText}>{item.name}</Text>
-        </>
+        </View>
       ))}
     </View>
-  ), []);
+  ), [data]);
 
   return (
     <View style={styles.root}>
@@ -67,7 +34,7 @@ export default function PieChartReport() {
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         }}
         style={styles.pieChart}
-        accessor="population"
+        accessor="value"
         hasLegend={false}
         paddingLeft={Dimensions.get('window').width / 4}
       />
@@ -103,5 +70,9 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     marginRight: 5
+  },
+  noteDiv: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   }
 });

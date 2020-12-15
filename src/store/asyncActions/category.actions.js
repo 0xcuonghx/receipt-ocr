@@ -24,8 +24,13 @@ export const editCategory = (
   params
 ) => async (dispatch) => {
   try {
+    console.log(params);
     dispatch(setLoading(true));
-    const budget = await axiosInstance.put(`${routeEnum.CATEGORIES}${params.id}`, { params });
+    const query = {
+      icon: params.icon,
+      name: params.name
+    };
+    const budget = await axiosInstance.put(`${routeEnum.CATEGORIES}${params.id}`, query);
     dispatch(setLoading(false));
     dispatch(editCategorySuccess(budget));
     dispatch(setMessage('edit category success'));
@@ -53,8 +58,12 @@ export const createCategory = (
   params
 ) => async (dispatch) => {
   try {
+    const query = {
+      icon: params.icon,
+      name: params.name
+    };
     dispatch(setLoading(true));
-    const category = await axiosInstance.post(routeEnum.CATEGORIES, { params });
+    const category = await axiosInstance.post(routeEnum.CATEGORIES, query);
     dispatch(setLoading(false));
     dispatch(createCategorySuccess(category));
     dispatch(setMessage('add category success'));

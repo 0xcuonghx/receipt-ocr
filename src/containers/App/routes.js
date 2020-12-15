@@ -4,7 +4,7 @@ import { View } from 'native-base';
 import Receipt from '../Receipts';
 import Report from '../../components/Report';
 import Budgets from '../Budgets';
-import Setting from '../../components/Setting';
+import Setting from '../Setting';
 import UploadModal from '../../components/Upload';
 
 import ReceiptIcon from '../../../assets/images/receipts.png';

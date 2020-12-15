@@ -9,12 +9,15 @@ import {
   StyleSheet
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import HeaderCustom from '../Common/HeaderCustom';
 import SelectPicker from './SelectPicker';
 import { logout } from '../../store/asyncActions/user.actions';
 
 export default function Setting() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const user = useSelector((state) => state.userReducer.user);
 
   const moneyOption = [
@@ -38,6 +41,10 @@ export default function Setting() {
     dispatch(logout());
   }, [dispatch]);
 
+  const goToCategories = React.useCallback(() => {
+    navigation.navigate('Categories');
+  }, [navigation]);
+
   return (
     <Container>
       <HeaderCustom title="Setting" />
@@ -58,7 +65,7 @@ export default function Setting() {
               </Left>
               <Right style={styles.right}>
                 {item === 'Categories' && (
-                <Button transparent>
+                <Button transparent onPress={goToCategories}>
                   <Icon name="arrow-forward" />
                 </Button>
                 )}

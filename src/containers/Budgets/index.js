@@ -24,7 +24,7 @@ export default function Budgets() {
   React.useEffect(() => {
     dispatch(fetchListBudgets());
     dispatch(fetchListCategories());
-  }, [dispatch, fetchBudgets, reFetch]);
+  }, [dispatch, reFetch]);
 
   const onDelete = React.useCallback((id) => {
     dispatch(deleteBudget(id));

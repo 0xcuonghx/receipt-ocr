@@ -10,7 +10,6 @@ import { AccessToken, clientId } from '../../constraint';
 
 export const createUser = (user) => async (dispatch) => {
   try {
-    // TODO: create user
     await axiosInstance.post(routeEnum.CREATE_USER, user);
   } catch (error) {
     dispatch(setError('create user fail!'));

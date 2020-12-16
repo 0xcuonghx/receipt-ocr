@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-  Container, Icon, ListItem, Left, Thumbnail, Body, Text, Right
+  Container, Icon, ListItem, Left, Body, Text, Right
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import HeaderCustom from '../../Common/HeaderCustom';
-import IconTest from '../../../../assets/images/budget.png';
 
 export default function Categories(props) {
   const { categories = [] } = props;
@@ -23,10 +22,7 @@ export default function Categories(props) {
       return (
         <ListItem thumbnail key={item.id} onPress={() => goToDetail(item.id)}>
           <Left>
-            <Thumbnail
-              source={IconTest}
-              small
-            />
+            <Icon type="MaterialIcons" name={item.icon} />
           </Left>
           <Body>
             <Text>{item.name || ''}</Text>

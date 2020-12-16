@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: 'white',
-    height: '20%'
+    height: '25%'
   },
   item: {
   }

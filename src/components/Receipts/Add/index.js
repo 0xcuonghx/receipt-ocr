@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react-native/no-raw-text */
 import React from 'react';
 import {
-  Container, Button, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
+  Container, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
 } from 'native-base';
 import moment from 'moment';
 import { StyleSheet, ScrollView } from 'react-native';
@@ -38,9 +40,7 @@ export default function AddReceipt(props) {
   }, [onAdd, detail, backToList]);
 
   const rightHeader = React.useMemo(() => (
-    <Button transparent onPress={saved}>
-      <Icon type="MaterialIcons" name="done" />
-    </Button>
+    <Icon type="MaterialIcons" name="done" onPress={saved} />
   ),
   [saved]);
 
@@ -72,10 +72,7 @@ export default function AddReceipt(props) {
       <HeaderCustom
         title="Add Receipt"
         left={(
-          <Button transparent onPress={backToList}>
-            <Icon name="arrow-back" />
-            <Text>Back</Text>
-          </Button>
+          <Icon name="arrow-back" onPress={backToList} />
         )}
         right={rightHeader}
       />
@@ -85,11 +82,11 @@ export default function AddReceipt(props) {
             <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
           </View>
           <View>
-            <Text>Among (vnd)</Text>
+            <Text>Among ($)</Text>
             <Input
               keyboardType="numeric"
               value={detail.total}
-              style={styles.title}
+              style={{ ...styles.title, ...styles.among }}
               onChangeText={(value) => updateField('total', value)}
             />
           </View>
@@ -97,9 +94,9 @@ export default function AddReceipt(props) {
         <ListItem>
           <Text style={styles.merchantTitle}>
             Merchant
-
           </Text>
           <Input
+            style={styles.input}
             value={detail.merchant}
             onChangeText={(value) => updateField('merchant', value)}
           />
@@ -192,5 +189,13 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     width: '70%',
+  },
+  among: {
+    width: 200,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 40
   },
 });

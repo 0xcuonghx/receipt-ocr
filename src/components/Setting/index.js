@@ -21,8 +21,7 @@ export default function Setting() {
   const user = useSelector((state) => state.userReducer.user);
 
   const moneyOption = [
-    { label: 'vnđ', key: 'VND' },
-    { label: '$', key: 'DOLLAR' },
+    { label: '$', key: '$' },
   ];
   const timeFormatOption = [
     { label: 'MM/DD/YYYY', key: 'MM/DD/YYYY' },
@@ -34,7 +33,6 @@ export default function Setting() {
   ];
   const LanguageOption = [
     { label: 'English', key: 'eng' },
-    { label: 'Việt Nam', key: 'vie' },
   ];
 
   const onLogout = React.useCallback(() => {

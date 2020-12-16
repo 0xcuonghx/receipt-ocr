@@ -35,9 +35,12 @@ export default function Receipt() {
   }, [dispatch]);
 
   React.useEffect(() => {
-    fetchReceipts();
     fetchCategories();
-  }, [fetchReceipts, fetchCategories, reFetch]);
+  }, [fetchCategories, reFetch]);
+
+  React.useEffect(() => {
+    fetchReceipts();
+  }, [fetchReceipts, reFetch]);
 
   const receipts = React.useMemo(() => _.groupBy(receiptReducer.data,
     (x) => moment(x.purchaseDate).format('MM/DD/YYYY')),

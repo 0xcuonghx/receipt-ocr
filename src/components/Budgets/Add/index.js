@@ -1,8 +1,9 @@
+/* eslint-disable react-native/no-unused-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-raw-text */
 import React from 'react';
 import {
-  View, Left, Right, Button, Text, Header, Body, List, ListItem, Input, Thumbnail, Picker, Icon
+  View, Left, Right, Text, Header, Body, List, ListItem, Input, Thumbnail, Picker, Icon
 } from 'native-base';
 import { StyleSheet } from 'react-native';
 import DateRangePicker from 'react-native-daterange-picker';
@@ -64,7 +65,7 @@ export default function DetailBudget(props) {
   return (
     <View style={styles.container}>
       <Header style={styles.header}>
-        <Left><Button transparent onPress={backToList}><Text>Cancel</Text></Button></Left>
+        <Left><Icon type="MaterialIcons" name="arrow-back" onPress={backToList} /></Left>
         <Body><Text>{isAdd ? 'Add Budget' : 'Detail'}</Text></Body>
         <Right>
           { isAdd ? <Icon type="MaterialIcons" name="done" onPress={() => saved('add')} /> : (
@@ -101,6 +102,7 @@ export default function DetailBudget(props) {
           </Left>
           <Right>
             <Input
+              style={styles.input}
               value={detail.among}
               keyboardType="numeric"
               onChangeText={(value) => updateField('among', value)}
@@ -155,5 +157,10 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     flex: 0.7,
-  }
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: 100,
+  },
 });

@@ -1,7 +1,8 @@
+/* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-raw-text */
 import React from 'react';
 import {
-  Container, Button, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
+  Container, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
 } from 'native-base';
 
 import { StyleSheet, ScrollView } from 'react-native';
@@ -16,6 +17,7 @@ export default function DetailReceipt(props) {
   const {
     data = {}, onDelete, getDetail, categories = [], onUpdate
   } = props;
+
   const route = useRoute();
   const navigation = useNavigation();
   const { receiptId } = route.params;
@@ -26,15 +28,19 @@ export default function DetailReceipt(props) {
   );
 
   const [editMode, setEditMode] = React.useState(false);
-  const [detail, setDetail] = React.useState({
-    id: data.id,
-    purchaseDate: dateUtils.isoToDate(data.purchaseDate) || '',
-    merchant: data.merchant || '',
-    category_id: getCategoryId(data.category) || '',
-    total: `${data.total || 0}`,
-    products: data.products || [],
-    url_image: data.url_image || ''
-  });
+  const [detail, setDetail] = React.useState({});
+
+  React.useEffect(() => {
+    setDetail({
+      id: data.id,
+      purchaseDate: dateUtils.isoToDate(data.purchaseDate) || '',
+      merchant: data.merchant || '',
+      category_id: getCategoryId(data.category) || '',
+      total: `${data.total || 0}`,
+      products: data.products || [],
+      url_image: data.url_image || ''
+    });
+  }, [data, getCategoryId]);
   const backToList = React.useCallback(() => {
     navigation.goBack();
   }, [navigation]);
@@ -62,17 +68,11 @@ export default function DetailReceipt(props) {
   }, [onDelete, receiptId, navigation]);
 
   const rightHeader = React.useMemo(() => (editMode ? (
-    <Button transparent onPress={saved}>
-      <Icon type="MaterialIcons" name="done" />
-    </Button>
+    <Icon type="MaterialIcons" name="done" onPress={saved} />
   ) : (
     <>
-      <Button transparent onPress={() => setEditMode(true)}>
-        <Icon type="MaterialIcons" name="create" />
-      </Button>
-      <Button transparent onPress={deleted}>
-        <Icon type="MaterialIcons" name="delete" />
-      </Button>
+      <Icon type="MaterialIcons" name="create" onPress={() => setEditMode(true)} />
+      <Icon type="MaterialIcons" name="delete" onPress={deleted} />
     </>
   )), [editMode, saved, deleted]);
 
@@ -104,10 +104,7 @@ export default function DetailReceipt(props) {
       <HeaderCustom
         title="Detail"
         left={(
-          <Button transparent onPress={backToList}>
-            <Icon name="arrow-back" />
-            <Text>Back</Text>
-          </Button>
+          <Icon name="arrow-back" onPress={backToList} />
         )}
         right={rightHeader}
       />
@@ -117,19 +114,20 @@ export default function DetailReceipt(props) {
             <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
           </View>
           <View>
-            <Text>Among (vnd)</Text>
+            <Text>Among ($)</Text>
             <Input
               keyboardType="numeric"
               value={detail.total}
-              style={styles.title}
+              style={{ ...styles.title, ...styles.among }}
               disabled={!editMode}
               onChangeText={(value) => updateField('total', value)}
             />
           </View>
         </ListItem>
         <ListItem>
-          <Text>Merchant</Text>
+          <Text style={styles.merchant}>Merchant</Text>
           <Input
+            style={styles.input}
             value={detail.merchant}
             disabled={!editMode}
             onChangeText={(value) => updateField('merchant', value)}
@@ -211,6 +209,9 @@ export default function DetailReceipt(props) {
 }
 
 const styles = StyleSheet.create({
+  among: {
+    width: 200,
+  },
   thumbnail: {
     paddingRight: 20
   },
@@ -228,4 +229,12 @@ const styles = StyleSheet.create({
   datePicker: {
     width: '70%',
   },
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 40
+  },
+  merchant: {
+    marginRight: 20
+  }
 });

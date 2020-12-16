@@ -33,12 +33,9 @@ export default function ListBudget(props) {
   }, [selectedMonth]);
 
   React.useEffect(() => {
-    // #TODO: seeds 
     fetchBudgets({ 
-      // fromDate: moment.unix(selectedMonth).startOf('month').toISOString(),
-      // toDate: moment.unix(selectedMonth).endOf('month').toISOString()
-      fromDate: '0',
-      toDate: '3'
+      fromDate: moment.unix(selectedMonth).startOf('month').toISOString(),
+      toDate: moment.unix(selectedMonth).endOf('month').toISOString()
     });
 
   }, [fetchBudgets, selectedMonth]);
@@ -122,9 +119,7 @@ export default function ListBudget(props) {
           </View>
         )}
         right={(
-          <Button transparent onPress={goToAdd}>
-            <Icon name="add" type="MaterialIcons" />
-          </Button>
+            <Icon name="add" type="MaterialIcons" onPress={goToAdd}/>
         )}
         left={(<View />)}
       />

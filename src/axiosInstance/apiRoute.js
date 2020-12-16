@@ -1,6 +1,6 @@
 const routeEnum = {
   BUDGETS: '/budgets/',
-  CREATE_USER: '/login/user/',
+  CREATE_USER: '/login/user',
   RECEIPTS: '/receipts/',
   CATEGORIES: '/categories/',
   REPORT: '/reports/'

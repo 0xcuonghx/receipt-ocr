@@ -1,6 +1,3 @@
-/* eslint-disable react-native/no-raw-text */
-/* eslint-disable react-native/no-color-literals */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   Container, Content, List, ListItem, Thumbnail, Text, Left, Body,
@@ -12,6 +9,7 @@ import moment from 'moment';
 import IconTest from '../../../../assets/images/budget.png';
 import HeaderCustom from '../../Common/HeaderCustom';
 import dataUtils from '../../../utils/dateUtils';
+import { acc } from 'react-native-reanimated';
 
 export default function ListBudget(props) {
   const { fetchBudgets, budgets=[] } = props;
@@ -45,35 +43,64 @@ export default function ListBudget(props) {
 
   }, [fetchBudgets, selectedMonth]);
 
+  const handleGotoDetail = React.useCallback((id) => {
+    navigation.navigate('Receipt', { screen: 'Detail', params: {receiptId: id} })
+  }, [])
   const list = React.useMemo(() => {
     return budgets.map((item) => {
-      // TODO: total seeds
-      const total = 30;
+      const total = (item.receipts || []).reduce((acc,cur) => acc + (cur.total || 0), 0);
+      const percent = Math.min(total / item.among , 1);
+      const color = percent < 0.5 ? '#8BED4F' : (percent < 0.8) ? '#fdcb6e' : '#d63031'
       return(
-      <ListItem thumbnail key={item.id} onPress={() => goToDetail(item.id)}>
-        <Left>
-          <Thumbnail
-            square
-            source={IconTest}
-          />
-        </Left>
-        <Body>
-          <Text>{item.category || ''}</Text>
-          <View style={styles.progressBar}>
-            <Animated.View
-              style={{ backgroundColor: '#8BED4F', width: `${total / item.among * 100} %` }}
+        <View key={item.id}>
+        <ListItem itemDivider thumbnail  onPress={() => goToDetail(item.id)}>
+          <Left>
+            <Thumbnail
+              square
+              source={IconTest}
             />
-          </View>
-          <Text numberOfLines={1} note>
-            {moment(item.fromDate).startOf('month').format('DD/MM/YYYY')}
-            -
-            {moment(item.toDate).endOf('month').format('DD/MM/YYYY')}
-          </Text> 
-        </Body>
-        <Right>
-          <Text>{item.among || 0} VND</Text>
-        </Right>
-      </ListItem>
+          </Left>
+          <Body>
+            <Text>{item.category || ''}</Text>
+            <View style={styles.progressBar}>
+              <Animated.View
+                style={{ backgroundColor: color, width: `${percent * 100} %` }}
+              />
+            </View>
+            <Text numberOfLines={1} note>
+              {moment(item.fromDate).startOf('month').format('DD/MM/YYYY')}
+              -
+              {moment(item.toDate).endOf('month').format('DD/MM/YYYY')}
+            </Text> 
+          </Body>
+          <Right>
+            <View>
+              <Text style={styles.text}>{`Budget: ${item.among || 0}`} $</Text>
+              <Text style={styles.text}>{`Used: ${total}`} $</Text>
+            </View>
+          </Right>
+        </ListItem>
+        <View style={styles.listItem}>
+          {(item.receipts || []).map(o => 
+          (<ListItem 
+              avatar 
+              key={o.id} 
+              onPress={() => handleGotoDetail(o.id)}  
+            >
+            <Body>
+              <Text note>Merchant</Text>
+              <Text numberOfLines={1}>{o.merchant}</Text>
+            </Body>
+            <Right>
+              <Text note>Total</Text>
+              <Text>
+                {`${o.total} VND`}
+              </Text>
+            </Right>
+          </ListItem>
+          ))}
+        </View>
+      </View>
     )})
   }, [budgets]);
 
@@ -126,4 +153,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    fontSize: 10
+  },
+  listItem: {
+    marginLeft: 20
+  }
 });

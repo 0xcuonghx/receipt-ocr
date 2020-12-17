@@ -21,8 +21,10 @@ const receiptReducer = createSlice({
     },
     editReceiptSuccess: (state, action) => {
       state.detail = action.payload;
+    },
+    uploadDataSuccess: (state, action) => {
+      state.detail = action.payload;
     }
-
   },
 });
 
@@ -30,7 +32,8 @@ export const {
   getListReceiptSuccess,
   getDetailReceiptSuccess,
   createReceiptSuccess,
-  editReceiptSuccess
+  editReceiptSuccess,
+  uploadDataSuccess
 } = receiptReducer.actions;
 
 export default receiptReducer.reducer;

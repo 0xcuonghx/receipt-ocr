@@ -4,9 +4,10 @@ import {
   getListReceiptSuccess,
   getDetailReceiptSuccess,
   editReceiptSuccess,
-  createReceiptSuccess
+  createReceiptSuccess,
+  uploadDataSuccess
 } from '../reducers/receipts.reducer';
-import { setError, setLoading } from '../reducers/ui.reducer';
+import { setError, setLoading, setMessage } from '../reducers/ui.reducer';
 import axiosInstance from '../../axiosInstance';
 import routeEnum from '../../axiosInstance/apiRoute';
 import dateUtils from '../../utils/dateUtils';
@@ -60,7 +61,7 @@ export const createReceipt = (
     const receipt = await axiosInstance.post(routeEnum.RECEIPTS, query);
     dispatch(setLoading(false));
     dispatch(createReceiptSuccess(receipt));
-    dispatch(setError('Success'));
+    dispatch(setMessage('Success'));
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Create receipt fail'));
@@ -69,14 +70,23 @@ export const createReceipt = (
 
 // TODO: receiptOCR
 export const createReceiptOCR = (
-  params
+  formData,
+  callback
 ) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  };
   try {
     dispatch(setLoading(true));
-    const receipt = await axiosInstance.post(routeEnum.RECEIPTS, params);
+    const receipt = await axiosInstance.post(`${routeEnum.RECEIPTS}upload`, formData, config);
     dispatch(setLoading(false));
-    dispatch(createReceiptSuccess(receipt));
-    dispatch(setError('Success'));
+    dispatch(uploadDataSuccess(receipt));
+    dispatch(setMessage('Success'));
+    if (callback) {
+      callback();
+    }
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Create receipt fail'));
@@ -100,7 +110,7 @@ export const editReceipt = (
     const receipt = await axiosInstance.put(`${routeEnum.RECEIPTS}${query.id}`, query);
     dispatch(setLoading(false));
     dispatch(editReceiptSuccess(receipt));
-    dispatch(setError('Success'));
+    dispatch(setMessage('Success'));
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Edit receipt fail'));
@@ -114,7 +124,7 @@ export const deleteReceipt = (
     dispatch(setLoading(true));
     axiosInstance.delete(`${routeEnum.RECEIPTS}${id}`);
     dispatch(setLoading(false));
-    dispatch(setError('Success'));
+    dispatch(setMessage('Success'));
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Edit receipt fail'));

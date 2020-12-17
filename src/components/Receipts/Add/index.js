@@ -8,16 +8,28 @@ import {
 import moment from 'moment';
 import { StyleSheet, ScrollView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import HeaderCustom from '../../Common/HeaderCustom';
 import AlertCustom from '../../Common/Alert';
 import IconMoney from '../../../../assets/images/money.png';
+import dateUtils from '../../../utils/dateUtils';
 
 export default function AddReceipt(props) {
+  const route = useRoute();
+  const isAddOcr = route.params?.isAddOcr;
+  const receiptReducer = useSelector((state) => state.receiptReducer);
+  const ocrRs = receiptReducer.detail;
+
   const {
     categories = [], onAdd
   } = props;
   const navigation = useNavigation();
+
+  const getCategoryId = React.useCallback(
+    (name) => categories.find((o) => o.name === name)?.id,
+    [categories]
+  );
 
   const [detail, setDetail] = React.useState({
     purchaseDate: moment().format('DD-MM-YYYY'),
@@ -27,6 +39,20 @@ export default function AddReceipt(props) {
     products: [],
     url_image: ''
   });
+
+  React.useEffect(() => {
+    if (isAddOcr) {
+      setDetail({
+        purchaseDate: dateUtils.isoToDate(ocrRs.purchaseDate) || moment().format('DD-MM-YYYY'),
+        merchant: ocrRs.merchant || 'merchant',
+        category_id: getCategoryId(ocrRs.category) || '',
+        total: `${ocrRs.total || '0'}`,
+        products: ocrRs.products || [],
+        url_image: ocrRs.url_image || ''
+      });
+    }
+
+  }, [isAddOcr, ocrRs, getCategoryId]);
 
   const saved = React.useCallback(() => {
     AlertCustom({

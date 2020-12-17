@@ -5,7 +5,7 @@ import Receipt from '../Receipts';
 import Report from '../Report';
 import Budgets from '../Budgets';
 import Setting from '../Setting';
-import UploadModal from '../../components/Upload';
+import UploadModal from '../Upload';
 
 import ReceiptIcon from '../../../assets/images/receipts.png';
 import ReportIcon from '../../../assets/images/report.png';

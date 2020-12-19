@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react-native/no-raw-text */
@@ -28,6 +29,11 @@ export default function AddReceipt(props) {
 
   const getCategoryId = React.useCallback(
     (name) => categories.find((o) => o.name === name)?.id,
+    [categories]
+  );
+
+  const getCategoryById = React.useCallback(
+    (id) => categories.find((o) => o.id === id),
     [categories]
   );
 
@@ -138,13 +144,21 @@ export default function AddReceipt(props) {
             selectedValue={detail.category_id}
             onValueChange={(value) => updateField('category_id', value)}
           >
-            {categories.map((o) => (
-              <Picker.Item
-                key={o.id}
-                label={o.name}
-                value={o.id}
-              />
-            ))}
+            {categories.map((o) => {
+              const category = getCategoryById(o.id);
+              return (
+                <Picker.Item
+                  key={o.id}
+                  label={(
+                    <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+                      <Icon name={category.icon} />
+                      <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
+                    </View>
+                  )}
+                  value={o.id}
+                />
+              );
+            })}
           </Picker>
         </ListItem>
         <ListItem>

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-raw-text */
 import React from 'react';
@@ -27,6 +28,10 @@ export default function DetailReceipt(props) {
     [categories]
   );
 
+  const getCategoryById = React.useCallback(
+    (id) => categories.find((o) => o.id === id),
+    [categories]
+  );
   const [editMode, setEditMode] = React.useState(false);
   const [detail, setDetail] = React.useState({});
 
@@ -145,13 +150,21 @@ export default function DetailReceipt(props) {
             selectedValue={detail.category_id}
             onValueChange={(value) => updateField('category_id', value)}
           >
-            {categories.map((o) => (
-              <Picker.Item
-                key={o.id}
-                label={o.name}
-                value={o.id}
-              />
-            ))}
+            {categories.map((o) => {
+              const category = getCategoryById(o.id);
+              return (
+                <Picker.Item
+                  key={o.id}
+                  label={(
+                    <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+                      <Icon name={category.icon} />
+                      <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
+                    </View>
+                  )}
+                  value={o.id}
+                />
+              );
+            })}
           </Picker>
         </ListItem>
         <ListItem>

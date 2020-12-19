@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-color-literals */
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera';
 import {
   Button, Icon, View, Text, List, ListItem, Left, Right
 } from 'native-base';
@@ -12,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 export default function UploadModal({ handleUploadFile }) {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const cameraInstance = React.useRef(null);
   React.useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -24,21 +22,11 @@ export default function UploadModal({ handleUploadFile }) {
     })();
   }, []);
 
-  React.useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    })();
-  }, []);
-
   const chooseImage = React.useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-
     const uriPaths = result.uri.split('.');
     handleUploadFile({
       fileName: 'receipt',
@@ -47,22 +35,15 @@ export default function UploadModal({ handleUploadFile }) {
     });
   }, [handleUploadFile]);
 
-  const captureImage = React.useCallback(async () => {
-    if (cameraInstance.current) {
-      const photo = await cameraInstance.current.takePictureAsync();
-      console.log(photo);
-    }
-  }, []);
-
   const addByHand = () => {
-    navigation.navigate('Receipt', { screen: 'Add' });
+    navigation.navigate('Receipt', { screen: 'Add', params: { isAddOcr: false } });
   };
   const handlePress = (item) => {
     if (item === 'Upload') {
       chooseImage();
     }
     if (item === 'Take Photo') {
-      captureImage();
+      navigation.navigate('Receipt', { screen: 'Camera' });
     }
     if (item === 'Add Receipt') {
       addByHand();
@@ -101,7 +82,6 @@ export default function UploadModal({ handleUploadFile }) {
           </List>
         </View>
       </Modal>
-      <Camera type={Camera.Constants.Type.back} ref={cameraInstance} />
     </>
   );
 }

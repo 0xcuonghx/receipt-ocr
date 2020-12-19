@@ -3,15 +3,15 @@ import {
   Icon, Picker, Form
 } from 'native-base';
 
-export default function SelectPicker({ iosHeader, options = [] }) {
+export default function SelectPicker({ iosHeader, options = [], selectedValue }) {
   return (
     <Form>
       <Picker
         mode="dropdown"
         iosHeader={iosHeader}
         iosIcon={<Icon name="arrow-down" />}
-        // selectedValue={this.state.selected}
-        // onValueChange={this.onValueChange.bind(this)}
+        selectedValue={selectedValue}
+        onValueChange={() => {}}
       >
         {options.map((item) => (
           <Picker.Item

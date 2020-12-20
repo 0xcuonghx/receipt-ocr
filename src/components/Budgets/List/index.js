@@ -47,7 +47,7 @@ export default function ListBudget(props) {
     return budgets.map((item) => {
       const total = (item.receipts || []).reduce((acc,cur) => acc + (cur.total || 0), 0);
       const percent = Math.min(total / item.among , 1);
-      const color = percent < 0.5 ? '#8BED4F' : (percent < 0.8) ? '#fdcb6e' : '#d63031'
+      const color = percent < 0.5 ? '#8BED4F' : (percent < 0.8) ? '#fdcb6e' : '#d63031';
       return(
         <View key={item.id}>
         <ListItem itemDivider thumbnail  onPress={() => goToDetail(item.id)}>
@@ -65,9 +65,9 @@ export default function ListBudget(props) {
               />
             </View>
             <Text numberOfLines={1} note>
-              {moment(item.fromDate).startOf('month').format('DD/MM/YYYY')}
+              {moment(item.fromDate).format('DD/MM/YYYY')}
               -
-              {moment(item.toDate).endOf('month').format('DD/MM/YYYY')}
+              {moment(item.toDate).format('DD/MM/YYYY')}
             </Text> 
           </Body>
           <Right>

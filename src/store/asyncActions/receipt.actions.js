@@ -62,13 +62,13 @@ export const createReceipt = (
     dispatch(setLoading(false));
     dispatch(createReceiptSuccess(receipt));
     dispatch(setMessage('Success'));
+    dispatch(fetchListReceipts());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Create receipt fail'));
   }
 };
 
-// TODO: receiptOCR
 export const createReceiptOCR = (
   formData,
   callback
@@ -111,6 +111,7 @@ export const editReceipt = (
     dispatch(setLoading(false));
     dispatch(editReceiptSuccess(receipt));
     dispatch(setMessage('Success'));
+    dispatch(fetchListReceipts());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Edit receipt fail'));
@@ -125,6 +126,7 @@ export const deleteReceipt = (
     axiosInstance.delete(`${routeEnum.RECEIPTS}${id}`);
     dispatch(setLoading(false));
     dispatch(setMessage('Success'));
+    dispatch(fetchListReceipts());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Edit receipt fail'));

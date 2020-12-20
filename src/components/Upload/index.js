@@ -29,7 +29,7 @@ export default function UploadModal({ handleUploadFile }) {
     });
     const uriPaths = result.uri.split('.');
     handleUploadFile({
-      fileName: 'receipt',
+      fileName: `receipt.${uriPaths[uriPaths.length - 1]}`,
       uri: result.uri,
       type: `${result.type}/${uriPaths[uriPaths.length - 1]}`
     });

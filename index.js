@@ -1,13 +1,11 @@
-
 import 'react-native-gesture-handler';
 import React from 'react';
-import App from './src/containers/App';
 import { Provider } from 'react-redux';
-import configureStore from './src/store';
 import { registerRootComponent } from 'expo';
+import App from './src/containers/App';
+import configureStore from './src/store';
 
 const store = configureStore();
-
 
 const Application = () => {
   return (
@@ -17,4 +15,4 @@ const Application = () => {
   );
 };
 
-registerRootComponent(Application)
+registerRootComponent(Application);

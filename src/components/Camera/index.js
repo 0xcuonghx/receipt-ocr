@@ -21,7 +21,7 @@ export default function CustomCamera({ handleUploadFile }) {
       const photo = await cameraInstance.current.takePictureAsync();
       const uriPaths = photo.uri.split('.');
       handleUploadFile({
-        fileName: 'receipt',
+        fileName: `receipt.${uriPaths[uriPaths.length - 1]}`,
         uri: photo.uri,
         type: `image/${uriPaths[uriPaths.length - 1]}`
       });

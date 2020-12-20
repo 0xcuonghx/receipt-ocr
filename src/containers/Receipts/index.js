@@ -23,8 +23,6 @@ export default function Receipt() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const [reFetch, setReFetch] = React.useState(Math.random());
-
   const receiptReducer = useSelector((state) => state.receiptReducer);
   const categoryReducer = useSelector((state) => state.categoryReducer);
 
@@ -42,11 +40,11 @@ export default function Receipt() {
 
   React.useEffect(() => {
     fetchCategories();
-  }, [fetchCategories, reFetch]);
+  }, [fetchCategories]);
 
   React.useEffect(() => {
     fetchReceipts();
-  }, [fetchReceipts, reFetch]);
+  }, [fetchReceipts]);
 
   const receipts = React.useMemo(() => _.groupBy(receiptReducer.data,
     (x) => moment(x.purchaseDate).format('MM/DD/YYYY')),
@@ -54,17 +52,14 @@ export default function Receipt() {
 
   const onDelete = React.useCallback((receiptId) => {
     dispatch(deleteReceipt(receiptId));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onUpdate = React.useCallback((receipt) => {
     dispatch(editReceipt(receipt));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onAdd = React.useCallback((receipt) => {
     dispatch(createReceipt(receipt));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const goToAdd = React.useCallback(() => {

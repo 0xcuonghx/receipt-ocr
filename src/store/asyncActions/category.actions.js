@@ -7,8 +7,7 @@ import { setError, setLoading, setMessage } from '../reducers/ui.reducer';
 import axiosInstance from '../../axiosInstance';
 import routeEnum from '../../axiosInstance/apiRoute';
 
-export const fetchListCategories = (
-) => async (dispatch) => {
+export const fetchListCategories = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
     const categories = await axiosInstance.get(routeEnum.CATEGORIES);
@@ -24,7 +23,6 @@ export const editCategory = (
   params
 ) => async (dispatch) => {
   try {
-    console.log(params);
     dispatch(setLoading(true));
     const query = {
       icon: params.icon,
@@ -34,6 +32,7 @@ export const editCategory = (
     dispatch(setLoading(false));
     dispatch(editCategorySuccess(budget));
     dispatch(setMessage('edit category success'));
+    dispatch(fetchListCategories());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('edit category fail'));
@@ -48,6 +47,7 @@ export const deleteCategory = (
     await axiosInstance.delete(`${routeEnum.CATEGORIES}${id}`);
     dispatch(setLoading(false));
     dispatch(setMessage('delete category success'));
+    dispatch(fetchListCategories());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('delete category fail - still have receipt'));
@@ -67,6 +67,7 @@ export const createCategory = (
     dispatch(setLoading(false));
     dispatch(createCategorySuccess(category));
     dispatch(setMessage('add category success'));
+    dispatch(fetchListCategories());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('add category fail'));

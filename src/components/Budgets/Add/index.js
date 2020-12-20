@@ -33,12 +33,16 @@ export default function DetailBudget(props) {
     [categories]
   );
 
-  const budget = budgets.find((o) => o.id === id) || {};
+  const budget = budgets.find((o) => o.id === id)
+  || {
+    fromDate: moment().startOf('month'),
+    toDate: moment().endOf('month')
+  };
   const [detail, setDetail] = React.useState({
     id: budget.id,
     category_id: getCategoryId(budget.category),
     fromDate: moment(budget.fromDate),
-    toDate: moment(budget.fromDate),
+    toDate: moment(budget.toDate),
     among: `${budget.among || 0}`
   });
   const backToList = React.useCallback(() => {

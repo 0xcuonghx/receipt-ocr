@@ -45,6 +45,7 @@ export const editBudget = (
     dispatch(setLoading(false));
     dispatch(editBudgetSuccess(budget));
     dispatch(setMessage('edit budget success'));
+    dispatch(fetchListBudgets());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('edit budget fail'));
@@ -59,6 +60,7 @@ export const deleteBudget = (
     await axiosInstance.delete(`${routeEnum.BUDGETS}${id}`);
     dispatch(setLoading(false));
     dispatch(setMessage('delete budget success'));
+    dispatch(fetchListBudgets());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('delete budget fail'));
@@ -80,6 +82,7 @@ export const createBudget = (
     dispatch(setLoading(false));
     dispatch(createBudgetSuccess(budget));
     dispatch(setMessage('add budget success'));
+    dispatch(fetchListBudgets());
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('add budget fail'));

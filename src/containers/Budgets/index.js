@@ -15,7 +15,6 @@ export default function Budgets() {
   const dispatch = useDispatch();
   const budgetReducer = useSelector((state) => state.budgetReducer);
   const categoryReducer = useSelector((state) => state.categoryReducer);
-  const [reFetch, setReFetch] = React.useState(Math.random());
 
   const fetchBudgets = React.useCallback((params) => {
     dispatch(fetchListBudgets(params));
@@ -24,21 +23,18 @@ export default function Budgets() {
   React.useEffect(() => {
     dispatch(fetchListBudgets());
     dispatch(fetchListCategories());
-  }, [dispatch, reFetch]);
+  }, [dispatch]);
 
   const onDelete = React.useCallback((id) => {
     dispatch(deleteBudget(id));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onUpdate = React.useCallback((detail) => {
     dispatch(editBudget(detail));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onAdd = React.useCallback((detail) => {
     dispatch(createBudget(detail));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   return (

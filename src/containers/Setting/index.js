@@ -12,7 +12,6 @@ const SettingStack = createStackNavigator();
 
 export default function Setting() {
   const dispatch = useDispatch();
-  const [reFetch, setReFetch] = React.useState(Math.random());
 
   const categoryReducer = useSelector((state) => state.categoryReducer);
 
@@ -22,21 +21,18 @@ export default function Setting() {
 
   React.useEffect(() => {
     fetchCategories();
-  }, [fetchCategories, reFetch]);
+  }, [fetchCategories]);
 
   const onDelete = React.useCallback((id) => {
     dispatch(deleteCategory(id));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onUpdate = React.useCallback((detail) => {
     dispatch(editCategory(detail));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   const onAdd = React.useCallback((detail) => {
     dispatch(createCategory(detail));
-    setReFetch(Math.random());
   }, [dispatch]);
 
   return (

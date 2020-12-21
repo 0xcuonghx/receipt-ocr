@@ -120,11 +120,12 @@ export default function DetailBudget(props) {
             </Picker>
           </Right>
         </ListItem>
-        <ListItem>
+        <ListItem style={styles.amongRow}>
           <Left>
             <Text>Among</Text>
           </Left>
-          <Right>
+          <Right style={styles.amongInput}>
+            <Text>$</Text>
             <Input
               style={styles.input}
               value={detail.among}
@@ -177,7 +178,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerStyle: {
-    top: '-50%'
+    top: '-40%',
+    width: 300,
   },
   dateLabel: {
     flex: 0.7,
@@ -186,5 +188,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     width: 100,
+    marginLeft: 10,
+    height: 40
   },
+  amongRow: {
+    height: 60
+  },
+  amongInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 0.5
+  }
 });

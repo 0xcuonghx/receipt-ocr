@@ -34,7 +34,6 @@ export default function DetailReceipt(props) {
   );
   const [editMode, setEditMode] = React.useState(false);
   const [detail, setDetail] = React.useState({});
-
   React.useEffect(() => {
     setDetail({
       id: data.id,
@@ -113,76 +112,76 @@ export default function DetailReceipt(props) {
         )}
         right={rightHeader}
       />
-      <List>
-        <ListItem itemHeader>
-          <View style={styles.thumbnail}>
-            <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
-          </View>
-          <View>
-            <Text>Among ($)</Text>
-            <Input
-              keyboardType="numeric"
-              value={detail.total}
-              style={{ ...styles.title, ...styles.among }}
-              disabled={!editMode}
-              onChangeText={(value) => updateField('total', value)}
-            />
-          </View>
-        </ListItem>
-        <ListItem>
-          <Text style={styles.merchant}>Merchant</Text>
-          <Input
-            style={styles.input}
-            value={detail.merchant}
-            disabled={!editMode}
-            onChangeText={(value) => updateField('merchant', value)}
-          />
-        </ListItem>
-        <ListItem>
-          <Text style={styles.titlePicker}>Category</Text>
-          <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="arrow-down" />}
-            style={styles.categoryPicker}
-            placeholder="Select category"
-            placeholderIconColor="#007aff"
-            enabled={editMode}
-            selectedValue={detail.category_id}
-            onValueChange={(value) => updateField('category_id', value)}
-          >
-            {categories.map((o) => {
-              const category = getCategoryById(o.id);
-              return (
-                <Picker.Item
-                  key={o.id}
-                  label={(
-                    <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-                      <Icon name={category.icon} />
-                      <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
-                    </View>
-                  )}
-                  value={o.id}
-                />
-              );
-            })}
-          </Picker>
-        </ListItem>
-        <ListItem>
-          <Text style={styles.titlePicker}>Purchase Date</Text>
-          <DatePicker
-            style={styles.datePicker}
-            date={detail.purchaseDate}
-            mode="date"
-            placeholder="Select Purchase Date"
-            format="DD-MM-YYYY"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            disabled={!editMode}
-            onDateChange={(value) => updateField('purchaseDate', value)}
-          />
-        </ListItem>
-      </List>
       <ScrollView>
+        <List>
+          <ListItem itemHeader>
+            <View style={styles.thumbnail}>
+              <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
+            </View>
+            <View>
+              <Text>Among ($)</Text>
+              <Input
+                keyboardType="numeric"
+                value={detail.total}
+                style={{ ...styles.title, ...styles.among }}
+                disabled={!editMode}
+                onChangeText={(value) => updateField('total', value)}
+              />
+            </View>
+          </ListItem>
+          <ListItem>
+            <Text style={styles.merchant}>Merchant</Text>
+            <Input
+              style={editMode && styles.input}
+              value={detail.merchant}
+              disabled={!editMode}
+              onChangeText={(value) => updateField('merchant', value)}
+            />
+          </ListItem>
+          <ListItem>
+            <Text style={styles.titlePicker}>Category</Text>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              style={styles.categoryPicker}
+              placeholder="Select category"
+              placeholderIconColor="#007aff"
+              enabled={editMode}
+              selectedValue={detail.category_id}
+              onValueChange={(value) => updateField('category_id', value)}
+            >
+              {categories.map((o) => {
+                const category = getCategoryById(o.id);
+                return (
+                  <Picker.Item
+                    key={o.id}
+                    label={(
+                      <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+                        <Icon name={category.icon} />
+                        <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
+                      </View>
+                  )}
+                    value={o.id}
+                  />
+                );
+              })}
+            </Picker>
+          </ListItem>
+          <ListItem>
+            <Text style={styles.titlePicker}>Purchase Date</Text>
+            <DatePicker
+              style={styles.datePicker}
+              date={detail.purchaseDate}
+              mode="date"
+              placeholder="Select Purchase Date"
+              format="DD-MM-YYYY"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              disabled={!editMode}
+              onDateChange={(value) => updateField('purchaseDate', value)}
+            />
+          </ListItem>
+        </List>
         <List>
           <ListItem itemHeader>
             <H3 style={styles.title}>List Products</H3>
@@ -216,6 +215,8 @@ export default function DetailReceipt(props) {
             </ListItem>
           ))}
         </List>
+        <View style={styles.addHeight} />
+
       </ScrollView>
     </Container>
   );
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   thumbnail: {
-    paddingRight: 20
+    paddingRight: 20,
   },
   title: {
     fontWeight: 'bold',
@@ -249,5 +250,8 @@ const styles = StyleSheet.create({
   },
   merchant: {
     marginRight: 20
-  }
+  },
+  addHeight: {
+    height: 400
+  },
 });

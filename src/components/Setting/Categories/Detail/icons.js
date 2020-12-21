@@ -4,10 +4,14 @@ const icons = [
   'watch',
   'train',
   'build',
-  'code',
   'list',
   'print',
-  'settings'
+  'settings',
+  'home',
+  'heart',
+  'image',
+  'car',
+  'information-circle'
 ];
 
 export default icons;

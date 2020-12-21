@@ -53,7 +53,7 @@ export default function Report(props) {
 
   const colorRandom = React.useCallback(
     // eslint-disable-next-line no-bitwise
-    () => `#${(Math.random() * 0xFFFFFF << 0).toString(16)}`.toUpperCase(),
+    () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`,
     []
   );
   const pieData = React.useMemo(

@@ -13,6 +13,8 @@ import { acc } from 'react-native-reanimated';
 
 export default function ListBudget(props) {
   const { fetchBudgets, budgets=[] } = props;
+
+  const [showMap, setShowMap] = React.useState(new Set())
   const navigation = useNavigation();
   const goToAdd = () => {
     navigation.navigate('Add');
@@ -43,6 +45,45 @@ export default function ListBudget(props) {
   const handleGotoDetail = React.useCallback((id) => {
     navigation.navigate('Receipt', { screen: 'Detail', params: {receiptId: id} })
   }, [])
+
+  const handleShowOrHidden = React.useCallback((status, key) => {
+    const newShowMap = new Set(showMap)
+    if (status) {
+      newShowMap.add(key);
+      setShowMap(newShowMap)
+    } else {
+      newShowMap.delete(key);
+      setShowMap(newShowMap)
+    }
+  }, [showMap]);
+
+  const listItem = React.useCallback((item) => {
+    const isShow = showMap.has(item?.id);
+    
+    return (<View style={styles.listItem}>
+          <Button transparent onPress={() => handleShowOrHidden(!isShow, item?.id)}>{isShow ? <Text>Hide</Text> : <Text>Show</Text>}</Button>
+          {isShow && (item?.receipts || []).map(o => 
+          (<ListItem 
+              avatar 
+              key={o.id} 
+              onPress={() => handleGotoDetail(o.id)}  
+            >
+            <Body>
+              <Text note>Merchant</Text>
+              <Text numberOfLines={1}>{o.merchant}</Text>
+            </Body>
+            <Right>
+              <Text note>Total</Text>
+              <Text>
+                {`${o.total} VND`}
+              </Text>
+            </Right>
+          </ListItem>
+          ))}
+        </View>
+      )
+  }, [handleGotoDetail, handleShowOrHidden, showMap])
+
   const list = React.useMemo(() => {
     return budgets.map((item) => {
       const total = (item.receipts || []).reduce((acc,cur) => acc + (cur.total || 0), 0);
@@ -77,29 +118,10 @@ export default function ListBudget(props) {
             </View>
           </Right>
         </ListItem>
-        <View style={styles.listItem}>
-          {(item.receipts || []).map(o => 
-          (<ListItem 
-              avatar 
-              key={o.id} 
-              onPress={() => handleGotoDetail(o.id)}  
-            >
-            <Body>
-              <Text note>Merchant</Text>
-              <Text numberOfLines={1}>{o.merchant}</Text>
-            </Body>
-            <Right>
-              <Text note>Total</Text>
-              <Text>
-                {`${o.total} VND`}
-              </Text>
-            </Right>
-          </ListItem>
-          ))}
-        </View>
+        {listItem(item)}
       </View>
     )})
-  }, [budgets]);
+  }, [budgets, listItem, goToDetail]);
 
   return (
     <Container>

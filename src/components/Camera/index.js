@@ -2,11 +2,13 @@
 /* eslint-disable react-native/no-color-literals */
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { View } from 'native-base';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Icon } from 'native-base';
+import { TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 
 export default function CustomCamera({ handleUploadFile }) {
   const cameraInstance = React.useRef(null);
+  const [photoPreview, setPhotoPreview] = React.useState(null);
+
   React.useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -19,14 +21,83 @@ export default function CustomCamera({ handleUploadFile }) {
   const captureImage = React.useCallback(async () => {
     if (cameraInstance.current) {
       const photo = await cameraInstance.current.takePictureAsync();
-      const uriPaths = photo.uri.split('.');
-      handleUploadFile({
-        fileName: `receipt.${uriPaths[uriPaths.length - 1]}`,
-        uri: photo.uri,
-        type: `image/${uriPaths[uriPaths.length - 1]}`
-      });
+      setPhotoPreview(photo);
     }
-  }, [handleUploadFile]);
+  }, []);
+
+  const getOcrResult = React.useCallback(() => {
+    const uriPaths = photoPreview.uri.split('.');
+    handleUploadFile({
+      fileName: `receipt.${uriPaths[uriPaths.length - 1]}`,
+      uri: photoPreview.uri,
+      type: `image/${uriPaths[uriPaths.length - 1]}`
+    });
+  }, [handleUploadFile, photoPreview]);
+
+  if (photoPreview) {
+    // preview
+    return (
+      <View
+        style={{
+          backgroundColor: 'transparent',
+          flex: 1,
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        <ImageBackground
+          source={{ uri: photoPreview.uri }}
+          style={{
+            flex: 1
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              padding: 15,
+              justifyContent: 'flex-end'
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setPhotoPreview(null)}
+                style={{
+                  width: 70,
+                  height: 70,
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  backgroundColor: '#fff',
+                  padding: 19
+                }}
+              >
+                <Icon name="camera" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={getOcrResult}
+                style={{
+                  width: 70,
+                  height: 70,
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  backgroundColor: '#fff',
+                  padding: 19,
+                }}
+              >
+                <Icon name="send" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
+    );
+
+  }
 
   return (
 

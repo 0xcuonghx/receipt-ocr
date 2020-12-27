@@ -20,7 +20,9 @@ export default function CustomCamera({ handleUploadFile }) {
 
   const captureImage = React.useCallback(async () => {
     if (cameraInstance.current) {
-      const photo = await cameraInstance.current.takePictureAsync();
+      const photo = await cameraInstance.current.takePictureAsync({
+        quality: 0.005
+      });
       setPhotoPreview(photo);
     }
   }, []);

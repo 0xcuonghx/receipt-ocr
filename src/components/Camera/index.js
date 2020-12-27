@@ -32,7 +32,6 @@ export default function CustomCamera({ handleUploadFile }) {
       uri: photoPreview.uri,
       type: `image/${uriPaths[uriPaths.length - 1]}`
     });
-    setPhotoPreview(null);
   }, [handleUploadFile, photoPreview]);
 
   if (photoPreview) {

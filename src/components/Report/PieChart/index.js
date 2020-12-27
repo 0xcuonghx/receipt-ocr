@@ -21,7 +21,7 @@ export default function PieChartReport({ data }) {
   return (
     <View style={styles.root}>
       <Title style={styles.title}>
-        <Text>Report By Week</Text>
+        <Text>Report By Category</Text>
       </Title>
       <PieChart
         data={data}

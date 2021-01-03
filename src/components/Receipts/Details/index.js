@@ -12,6 +12,8 @@ import DatePicker from 'react-native-datepicker';
 import HeaderCustom from '../../Common/HeaderCustom';
 import AlertCustom from '../../Common/Alert';
 import IconMoney from '../../../../assets/images/money.png';
+import IconReceipt from '../../../../assets/images/receipt/002.jpg';
+
 import dateUtils from '../../../utils/dateUtils';
 
 export default function DetailReceipt(props) {
@@ -116,7 +118,7 @@ export default function DetailReceipt(props) {
         <List>
           <ListItem itemHeader>
             <View style={styles.thumbnail}>
-              <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
+              <Thumbnail square source={detail.url_image ? IconReceipt : IconMoney} />
             </View>
             <View>
               <Text>Among ($)</Text>

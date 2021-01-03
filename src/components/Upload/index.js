@@ -25,7 +25,7 @@ export default function UploadModal({ handleUploadFile }) {
   const chooseImage = React.useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
+      quality: 0.5,
     });
     const uriPaths = result.uri.split('.');
     handleUploadFile({

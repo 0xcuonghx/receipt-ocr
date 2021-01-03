@@ -60,6 +60,7 @@ export default function ListBudget(props) {
   const listItem = React.useCallback((item) => {
     const isShow = showMap.has(item?.id);
     
+    if (!(item?.receipts || []).length) return null;
     return (<View style={styles.listItem}>
           <Button transparent onPress={() => handleShowOrHidden(!isShow, item?.id)}>{isShow ? <Text>Hide</Text> : <Text>Show</Text>}</Button>
           {isShow && (item?.receipts || []).map(o => 

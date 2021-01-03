@@ -8,6 +8,7 @@ import dateUtils from '../../../utils/dateUtils';
 
 import HeaderCustom from '../../Common/HeaderCustom';
 import ImageDefault from '../../../../assets/images/logo.png';
+import ImageReceipt from '../../../../assets/images/receipt/001.jpg';
 
 export default function ListReceipt(props) {
   const { data = {}, fetchReceipts } = props;
@@ -81,7 +82,7 @@ export default function ListReceipt(props) {
             ? (
               <Tab key={tab.heading} heading={tab.heading} disabled>
                 <Content>
-                  {Object.keys(data).map((key) => (
+                  {Object.keys(data).sort((a, b) => moment(a).subtract(moment(b))).map((key) => (
                     <View key={key}>
                       <Separator bordered>
                         <Text>{key}</Text>
@@ -92,7 +93,7 @@ export default function ListReceipt(props) {
                             <Thumbnail
                               small
                               source={
-                                o.url_image ? { uri: o.url_image } : ImageDefault
+                                o.url_image ? ImageReceipt : ImageDefault
                               }
                             />
                           </Left>

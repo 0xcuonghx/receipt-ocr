@@ -13,7 +13,7 @@ import PieChartReport from './PieChart';
 
 export default function Report(props) {
   const {
-    fetchByWeek, fetchByCategory, dataByWeek, dataByCategory
+    fetchByWeek, fetchByCategory, dataByWeek = [], dataByCategory = []
   } = props;
   const currentMonth = React.useMemo(() => dataUtils.getCurrentMonthByUnix(), []);
   const [selectedMonth, setSelectedMonth] = React.useState(currentMonth);

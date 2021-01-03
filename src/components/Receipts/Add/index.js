@@ -14,13 +14,14 @@ import { useSelector } from 'react-redux';
 import HeaderCustom from '../../Common/HeaderCustom';
 import AlertCustom from '../../Common/Alert';
 import IconMoney from '../../../../assets/images/money.png';
+import IconReceipt from '../../../../assets/images/receipt/003.jpg';
 import dateUtils from '../../../utils/dateUtils';
 
 export default function AddReceipt(props) {
   const route = useRoute();
   const isAddOcr = route.params?.isAddOcr;
   const receiptReducer = useSelector((state) => state.receiptReducer);
-  const ocrRs = receiptReducer.detail;
+  const ocrRs = React.useMemo(() => receiptReducer.detail || {}, [receiptReducer]);
 
   const {
     categories = [], onAdd
@@ -31,7 +32,6 @@ export default function AddReceipt(props) {
     (name) => categories.find((o) => o.name === name)?.id,
     [categories]
   );
-
   const getCategoryById = React.useCallback(
     (id) => categories.find((o) => o.id === id),
     [categories]
@@ -49,16 +49,17 @@ export default function AddReceipt(props) {
   React.useEffect(() => {
     if (isAddOcr) {
       setDetail({
-        purchaseDate: dateUtils.isoToDate(ocrRs.purchaseDate) || moment().format('DD-MM-YYYY'),
-        merchant: ocrRs.merchant || 'merchant',
-        category_id: getCategoryId(ocrRs.category) || '',
-        total: `${ocrRs.total || '0'}`,
-        products: ocrRs.products || [],
-        url_image: ocrRs.url_image || ''
+        purchaseDate: dateUtils.isoToDate(ocrRs?.purchaseDate) || moment().format('DD-MM-YYYY'),
+        merchant: ocrRs?.merchant || 'merchant',
+        category_id: getCategoryId(ocrRs?.category) || '',
+        total: `${ocrRs?.total || '0'}`,
+        products: ocrRs?.products || [],
+        url_image: ocrRs?.url_image || ''
       });
     }
-
   }, [isAddOcr, ocrRs, getCategoryId]);
+
+  // }, [isAddOcr, ocrRs, getCategoryId]);
 
   const saved = React.useCallback(() => {
     AlertCustom({
@@ -111,7 +112,7 @@ export default function AddReceipt(props) {
       <List>
         <ListItem itemHeader>
           <View style={styles.thumbnail}>
-            <Thumbnail square source={detail.url_image ? { uri: detail.url_image } : IconMoney} />
+            <Thumbnail square source={detail.url_image ? IconReceipt : IconMoney} />
           </View>
           <View>
             <Text>Among ($)</Text>
@@ -204,6 +205,8 @@ export default function AddReceipt(props) {
             </ListItem>
           ))}
         </List>
+        <View style={styles.addHeight} />
+
       </ScrollView>
     </Container>
   );
@@ -237,5 +240,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     height: 40
+  },
+  addHeight: {
+    height: 400
   },
 });

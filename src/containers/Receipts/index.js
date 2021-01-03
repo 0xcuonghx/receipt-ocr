@@ -47,7 +47,7 @@ export default function Receipt() {
   }, [fetchReceipts]);
 
   const receipts = React.useMemo(() => _.groupBy(receiptReducer.data,
-    (x) => moment(x.purchaseDate).format('MM/DD/YYYY')),
+    (x) => moment(x.purchaseDate).format('DD/MM/YYYY')),
   [receiptReducer.data]);
 
   const onDelete = React.useCallback((receiptId) => {

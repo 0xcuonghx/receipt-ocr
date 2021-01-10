@@ -3,6 +3,7 @@ import {
   Container, Icon, ListItem, Left, Body, Text, Right
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 import HeaderCustom from '../../Common/HeaderCustom';
 
 export default function Categories(props) {
@@ -22,7 +23,7 @@ export default function Categories(props) {
       return (
         <ListItem thumbnail key={item.id} onPress={() => goToDetail(item.id)}>
           <Left>
-            <Icon type="MaterialIcons" name={item.icon} />
+            <Icon name={item.icon} />
           </Left>
           <Body>
             <Text>{item.name || ''}</Text>
@@ -48,7 +49,9 @@ export default function Categories(props) {
         )}
         left={(<Icon name="arrow-back" type="MaterialIcons" onPress={backToSetting} />)}
       />
-      {list}
+      <ScrollView>
+        {list}
+      </ScrollView>
     </Container>
   );
 }

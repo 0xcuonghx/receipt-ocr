@@ -41,6 +41,7 @@ export const login = () => async (dispatch) => {
       await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
       dispatch(createUser(user));
     }
+    dispatch(setLoading(false));
   } catch (error) {
     dispatch(setLoading(false));
     dispatch(setError('Login Fail!'));

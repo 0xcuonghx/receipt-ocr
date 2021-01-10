@@ -26,6 +26,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 // do something when response
 axiosInstance.interceptors.response.use((response) => {
   // if status code 2xx
+  console.log('----------------------');
   console.log(JSON.stringify(response));
   if (response.status === 200) {
     if (response?.data?.message !== 'successful' && response?.data?.message !== 'success') {

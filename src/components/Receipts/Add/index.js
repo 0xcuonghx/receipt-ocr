@@ -192,6 +192,7 @@ export default function AddReceipt(props) {
               </Left>
               <Right>
                 <Input
+                  style={styles.productInput}
                   keyboardType="numeric"
                   value={`${o?.price || ''}`}
                   onChangeText={(value) => updateProducts('update', index, { ...o, price: value })}
@@ -244,4 +245,9 @@ const styles = StyleSheet.create({
   addHeight: {
     height: 400
   },
+  productInput: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: 100
+  }
 });

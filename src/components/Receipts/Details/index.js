@@ -201,6 +201,7 @@ export default function DetailReceipt(props) {
               </Left>
               <Right>
                 <Input
+                  style={editMode && styles.productInput}
                   keyboardType="numeric"
                   value={`${o?.price || 0}`}
                   disabled={!editMode}
@@ -256,4 +257,9 @@ const styles = StyleSheet.create({
   addHeight: {
     height: 400
   },
+  productInput: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: 100
+  }
 });

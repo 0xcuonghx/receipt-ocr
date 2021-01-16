@@ -124,6 +124,14 @@ export default function ListBudget(props) {
     )})
   }, [budgets, listItem, goToDetail]);
 
+  const refresh = React.useCallback(() => {
+    setSelectedMonth(currentMonth);
+    fetchBudgets({ 
+      fromDate: moment.unix(currentMonth).startOf('month').toISOString(),
+      toDate: moment.unix(currentMonth).endOf('month').toISOString()
+    });
+  }, [currentMonth, fetchBudgets]);
+  
   return (
     <Container>
       <HeaderCustom
@@ -142,7 +150,10 @@ export default function ListBudget(props) {
           </View>
         )}
         right={(
-            <Icon name="add" type="MaterialIcons" onPress={goToAdd}/>
+          <>
+            <Icon name="add" type="MaterialIcons" onPress={goToAdd} style={{ marginRight: 5}}/>
+            <Icon name="ios-refresh" onPress={refresh} />
+          </>
         )}
         left={(<View />)}
       />

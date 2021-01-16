@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   Container, Icon, ListItem, Left, Body, Text, Right
@@ -7,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import HeaderCustom from '../../Common/HeaderCustom';
 
 export default function Categories(props) {
-  const { categories = [] } = props;
+  const { categories = [], fetchCategories } = props;
   const navigation = useNavigation();
 
   const goToAdd = React.useCallback(() => {
@@ -40,14 +41,24 @@ export default function Categories(props) {
     navigation.navigate('Setting');
   }, [navigation]);
 
+  const refresh = React.useCallback(() => {
+    fetchCategories();
+  }, [fetchCategories]);
   return (
     <Container>
       <HeaderCustom
         title="Categories"
         right={(
-          <Icon name="add" type="MaterialIcons" onPress={goToAdd} />
+          <>
+            <Icon name="add" type="MaterialIcons" onPress={goToAdd} style={{ marginRight: 10 }} />
+            <Icon name="ios-refresh" onPress={refresh} />
+          </>
         )}
-        left={(<Icon name="arrow-back" type="MaterialIcons" onPress={backToSetting} />)}
+        left={(
+          <>
+            <Icon name="arrow-back" type="MaterialIcons" onPress={backToSetting} />
+          </>
+)}
       />
       <ScrollView>
         {list}

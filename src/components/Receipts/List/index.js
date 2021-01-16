@@ -78,10 +78,10 @@ export default function ListReceipt(props) {
     <Container>
       <HeaderCustom
         title="Receipt"
-        right={(
-          <Icon name="ios-refresh" onPress={refresh} />
+        left={(
+          <View />
         )}
-        left={(<View />)}
+        right={(<Icon name="ios-refresh" onPress={refresh} />)}
       />
       <Tabs
         onChangeTab={onChangeTab}

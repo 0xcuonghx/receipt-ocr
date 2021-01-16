@@ -44,7 +44,11 @@ export default function Setting() {
       </SettingStack.Screen>
       <SettingStack.Screen name="Categories">
         {(props) => (
-          <Categories {...props} categories={categoryReducer.data} />
+          <Categories
+            {...props}
+            categories={categoryReducer.data}
+            fetchCategories={fetchCategories}
+          />
         )}
       </SettingStack.Screen>
       <SettingStack.Screen name="Detail">

@@ -76,7 +76,7 @@ export default function ListBudget(props) {
             <Right>
               <Text note>Total</Text>
               <Text>
-                {`${o.total} VND`}
+                {`${o.total} $`}
               </Text>
             </Right>
           </ListItem>

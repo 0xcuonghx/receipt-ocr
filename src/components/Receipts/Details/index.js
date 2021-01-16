@@ -60,9 +60,10 @@ export default function DetailReceipt(props) {
       title: 'Confirm Save',
       onOk: () => {
         onUpdate(detail);
+        backToList();
       }
     });
-  }, [onUpdate, detail]);
+  }, [onUpdate, detail, backToList]);
 
   const deleted = React.useCallback(() => {
     AlertCustom({

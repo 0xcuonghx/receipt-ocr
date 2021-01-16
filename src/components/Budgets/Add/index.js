@@ -23,6 +23,7 @@ export default function DetailBudget(props) {
     categories = [], budgets = [], onAdd, onDelete, onUpdate
   } = props;
 
+  const [displayedDate, setDisplayedDate] = React.useState(moment());
   const getCategoryId = React.useCallback(
     (name) => categories.find((o) => o.name === name)?.id,
     [categories]
@@ -141,16 +142,20 @@ export default function DetailBudget(props) {
             <Right>
               <DateRangePicker
                 onChange={(dates) => {
+                  console.log(dates);
                   if (dates.startDate) {
                     updateField('fromDate', dates.startDate);
                   }
                   if (dates.endDate) {
                     updateField('toDate', dates.endDate);
                   }
+                  if (dates.displayedDate) {
+                    setDisplayedDate(dates.displayedDate);
+                  }
                 }}
                 endDate={detail.toDate}
                 startDate={detail.fromDate}
-                displayedDate={moment()}
+                displayedDate={displayedDate}
                 range
                 containerStyle={styles.containerStyle}
               >

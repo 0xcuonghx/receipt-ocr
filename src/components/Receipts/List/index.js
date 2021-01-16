@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import {
-  Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View, Thumbnail, Left
+  Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View, Thumbnail, Left, Icon
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import dateUtils from '../../../utils/dateUtils';
@@ -67,9 +67,22 @@ export default function ListReceipt(props) {
     navigation.navigate('Detail', { receiptId });
   }, [navigation]);
 
+  const refresh = React.useCallback(() => {
+    setSelectedMonth(currentMonth);
+    fetchReceipts({
+      fromDate: moment.unix(currentMonth).startOf('month').toISOString(),
+      toDate: moment.unix(currentMonth).endOf('month').toISOString()
+    });
+  }, [fetchReceipts, currentMonth]);
   return (
     <Container>
-      <HeaderCustom title="Receipt" />
+      <HeaderCustom
+        title="Receipt"
+        right={(
+          <Icon name="ios-refresh" onPress={refresh} />
+        )}
+        left={(<View />)}
+      />
       <Tabs
         onChangeTab={onChangeTab}
         initialPage={1}
@@ -82,7 +95,7 @@ export default function ListReceipt(props) {
             ? (
               <Tab key={tab.heading} heading={tab.heading} disabled>
                 <Content>
-                  {Object.keys(data).sort((a, b) => moment(a).subtract(moment(b))).map((key) => (
+                  {Object.keys(data).sort(compareDate).map((key) => (
                     <View key={key}>
                       <Separator bordered>
                         <Text>{key}</Text>
@@ -123,4 +136,12 @@ export default function ListReceipt(props) {
       </Tabs>
     </Container>
   );
+}
+
+function compareDate(a, b) {
+  try {
+    return Number(a.slice(0, 2)) - Number(b.slice(0, 2));
+  } catch (error) {
+    return 0;
+  }
 }

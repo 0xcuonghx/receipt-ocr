@@ -6,7 +6,9 @@ import {
   Container, Icon, Text, ListItem, List, Thumbnail, View, H3, Left, Right, Input, Picker,
 } from 'native-base';
 
-import { StyleSheet, ScrollView } from 'react-native';
+import {
+  StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard
+} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-datepicker';
 import HeaderCustom from '../../Common/HeaderCustom';
@@ -106,122 +108,125 @@ export default function DetailReceipt(props) {
   }, [updateField, detail]);
 
   return (
-    <Container>
-      <HeaderCustom
-        title="Detail"
-        left={(
-          <Icon name="arrow-back" onPress={backToList} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Container>
+        <HeaderCustom
+          title="Detail"
+          left={(
+            <Icon name="arrow-back" onPress={backToList} />
         )}
-        right={rightHeader}
-      />
-      <ScrollView>
-        <List>
-          <ListItem itemHeader>
-            <View style={styles.thumbnail}>
-              <Thumbnail square source={detail.url_image ? IconReceipt : IconMoney} />
-            </View>
-            <View>
-              <Text>Among ($)</Text>
-              <Input
-                keyboardType="numeric"
-                value={detail.total}
-                style={{ ...styles.title, ...styles.among }}
-                disabled={!editMode}
-                onChangeText={(value) => updateField('total', value)}
-              />
-            </View>
-          </ListItem>
-          <ListItem>
-            <Text style={styles.merchant}>Merchant</Text>
-            <Input
-              style={editMode && styles.input}
-              value={detail.merchant}
-              disabled={!editMode}
-              onChangeText={(value) => updateField('merchant', value)}
-            />
-          </ListItem>
-          <ListItem>
-            <Text style={styles.titlePicker}>Category</Text>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={styles.categoryPicker}
-              placeholder="Select category"
-              placeholderIconColor="#007aff"
-              enabled={editMode}
-              selectedValue={detail.category_id}
-              onValueChange={(value) => updateField('category_id', value)}
-            >
-              {categories.map((o) => {
-                const category = getCategoryById(o.id);
-                return (
-                  <Picker.Item
-                    key={o.id}
-                    label={(
-                      <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-                        <Icon name={category.icon} />
-                        <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
-                      </View>
-                  )}
-                    value={o.id}
-                  />
-                );
-              })}
-            </Picker>
-          </ListItem>
-          <ListItem>
-            <Text style={styles.titlePicker}>Purchase Date</Text>
-            <DatePicker
-              style={styles.datePicker}
-              date={detail.purchaseDate}
-              mode="date"
-              placeholder="Select Purchase Date"
-              format="DD-MM-YYYY"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              disabled={!editMode}
-              onDateChange={(value) => updateField('purchaseDate', value)}
-            />
-          </ListItem>
-        </List>
-        <List>
-          <ListItem itemHeader>
-            <H3 style={styles.title}>List Products</H3>
-            {editMode
-            && <Icon type="MaterialIcons" name="add" onPress={() => updateProducts('add')} />}
-          </ListItem>
-          {(detail.products || []).map((o, index) => (
-            <ListItem key={index.toString()}>
-              <Left>
+          right={rightHeader}
+        />
+        <ScrollView>
+          <List>
+            <ListItem itemHeader>
+              <View style={styles.thumbnail}>
+                <Thumbnail square source={detail.url_image ? IconReceipt : IconMoney} />
+              </View>
+              <View>
+                <Text>Among ($)</Text>
                 <Input
-                  value={o?.name || ''}
-                  disabled={!editMode}
-                  onChangeText={(value) => updateProducts('update', index, { ...o, name: value })}
-                />
-              </Left>
-              <Right>
-                <Input
-                  style={editMode && styles.productInput}
                   keyboardType="numeric"
-                  value={`${o?.price || 0}`}
+                  value={detail.total}
+                  style={{ ...styles.title, ...styles.among }}
                   disabled={!editMode}
-                  onChangeText={(value) => updateProducts('update', index, { ...o, price: value })}
+                  onChangeText={(value) => updateField('total', value)}
                 />
-              </Right>
-              {editMode && (
-              <Icon
-                type="MaterialIcons"
-                name="delete"
-                onPress={() => updateProducts('delete', index,)}
-              />
-              )}
+              </View>
             </ListItem>
-          ))}
-        </List>
-        <View style={styles.addHeight} />
+            <ListItem>
+              <Text style={styles.merchant}>Merchant</Text>
+              <Input
+                style={editMode && styles.input}
+                value={detail.merchant}
+                disabled={!editMode}
+                onChangeText={(value) => updateField('merchant', value)}
+              />
+            </ListItem>
+            <ListItem>
+              <Text style={styles.titlePicker}>Category</Text>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={styles.categoryPicker}
+                placeholder="Select category"
+                placeholderIconColor="#007aff"
+                enabled={editMode}
+                selectedValue={detail.category_id}
+                onValueChange={(value) => updateField('category_id', value)}
+              >
+                {categories.map((o) => {
+                  const category = getCategoryById(o.id);
+                  return (
+                    <Picker.Item
+                      key={o.id}
+                      label={(
+                        <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+                          <Icon name={category.icon} />
+                          <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
+                        </View>
+                  )}
+                      value={o.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </ListItem>
+            <ListItem>
+              <Text style={styles.titlePicker}>Purchase Date</Text>
+              <DatePicker
+                style={styles.datePicker}
+                date={detail.purchaseDate}
+                mode="date"
+                placeholder="Select Purchase Date"
+                format="DD-MM-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                disabled={!editMode}
+                onDateChange={(value) => updateField('purchaseDate', value)}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem itemHeader>
+              <H3 style={styles.title}>List Products</H3>
+              {editMode
+            && <Icon type="MaterialIcons" name="add" onPress={() => updateProducts('add')} />}
+            </ListItem>
+            {(detail.products || []).map((o, index) => (
+              <ListItem key={index.toString()}>
+                <Left>
+                  <Input
+                    style={styles.productName}
+                    value={o?.name || ''}
+                    disabled={!editMode}
+                    onChangeText={(value) => updateProducts('update', index, { ...o, name: value })}
+                  />
+                </Left>
+                <Right>
+                  <Input
+                    style={editMode && styles.productInput}
+                    keyboardType="numeric"
+                    value={`${o?.price || 0}`}
+                    disabled={!editMode}
+                    onChangeText={(value) => updateProducts('update', index, { ...o, price: value })}
+                  />
+                </Right>
+                {editMode && (
+                <Icon
+                  type="MaterialIcons"
+                  name="delete"
+                  onPress={() => updateProducts('delete', index,)}
+                />
+                )}
+              </ListItem>
+            ))}
+          </List>
+          <View style={styles.addHeight} />
 
-      </ScrollView>
-    </Container>
+        </ScrollView>
+      </Container>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -261,5 +266,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     width: 100
+  },
+  productName: {
+    maxWidth: 200,
   }
 });

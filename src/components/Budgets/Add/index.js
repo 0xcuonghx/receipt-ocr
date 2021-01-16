@@ -6,7 +6,7 @@ import React from 'react';
 import {
   View, Left, Right, Text, Header, Body, List, ListItem, Input, Thumbnail, Picker, Icon
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import DateRangePicker from 'react-native-daterange-picker';
 import moment from 'moment';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -73,103 +73,103 @@ export default function DetailBudget(props) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Header style={styles.header}>
-        <Left><Icon type="MaterialIcons" name="arrow-back" onPress={backToList} /></Left>
-        <Body><Text>{isAdd ? 'Add Budget' : 'Detail'}</Text></Body>
-        <Right>
-          { isAdd ? <Icon type="MaterialIcons" name="done" onPress={() => saved('add')} /> : (
-            <>
-              <Icon type="MaterialIcons" name="create" onPress={() => saved('update')} />
-              <Icon type="MaterialIcons" name="delete" onPress={() => saved('delete')} />
-            </>
-          )}
-        </Right>
-      </Header>
-      <List>
-        <ListItem>
-          <Left>
-            <Thumbnail small source={Icon1} />
-            <Text>Category</Text>
-          </Left>
-          <Right style={styles.right}>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              placeholder="Select category"
-              placeholderIconColor="#007aff"
-              selectedValue={detail.category_id}
-              onValueChange={(value) => updateField('category_id', value)}
-
-            >
-              {categories.map((o) => {
-                const category = getCategoryById(o.id);
-                return (
-                  <Picker.Item
-                    key={o.id}
-                    label={(
-                      <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-                        <Icon name={category.icon} />
-                        <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
-                      </View>
-                  )}
-                    value={o.id}
-                  />
-                );
-              })}
-            </Picker>
-          </Right>
-        </ListItem>
-        <ListItem style={styles.amongRow}>
-          <Left>
-            <Text>Among</Text>
-          </Left>
-          <Right style={styles.amongInput}>
-            <Text>$</Text>
-            <Input
-              style={styles.input}
-              value={detail.among}
-              keyboardType="numeric"
-              onChangeText={(value) => updateField('among', value)}
-            />
-          </Right>
-        </ListItem>
-        <ListItem>
-          <Left style={styles.dateLabel}>
-            <Text>Time Range</Text>
-          </Left>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Header style={styles.header}>
+          <Left><Icon type="MaterialIcons" name="arrow-back" onPress={backToList} /></Left>
+          <Body><Text>{isAdd ? 'Add Budget' : 'Detail'}</Text></Body>
           <Right>
-            <DateRangePicker
-              onChange={(dates) => {
-                if (dates.startDate) {
-                  updateField('fromDate', dates.startDate);
-                }
-                if (dates.endDate) {
-                  updateField('toDate', dates.endDate);
-                }
-              }}
-              endDate={detail.toDate}
-              startDate={detail.fromDate}
-              displayedDate={moment()}
-              range
-              containerStyle={styles.containerStyle}
-            >
-              <Text>
-                {`${moment(detail.fromDate).format('DD/MM/YYYY')} - ${moment(detail.toDate).format('DD/MM/YYYY')}`}
-              </Text>
-            </DateRangePicker>
+            { isAdd ? <Icon type="MaterialIcons" name="done" onPress={() => saved('add')} /> : (
+              <>
+                <Icon type="MaterialIcons" name="create" onPress={() => saved('update')} />
+                <Icon type="MaterialIcons" name="delete" onPress={() => saved('delete')} />
+              </>
+            )}
           </Right>
-        </ListItem>
-
-      </List>
-
-    </View>
+        </Header>
+        <List>
+          <ListItem>
+            <Left>
+              <Thumbnail small source={Icon1} />
+              <Text>Category</Text>
+            </Left>
+            <Right style={styles.right}>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                placeholder="Select category"
+                placeholderIconColor="#007aff"
+                selectedValue={detail.category_id}
+                onValueChange={(value) => updateField('category_id', value)}
+              >
+                {categories.map((o) => {
+                  const category = getCategoryById(o.id);
+                  return (
+                    <Picker.Item
+                      key={o.id}
+                      label={(
+                        <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+                          <Icon name={category.icon} />
+                          <Text style={{ paddingLeft: 10 }}>{category.name}</Text>
+                        </View>
+                  )}
+                      value={o.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </Right>
+          </ListItem>
+          <ListItem style={styles.amongRow}>
+            <Left>
+              <Text>Among</Text>
+            </Left>
+            <Right style={styles.amongInput}>
+              <Text>$</Text>
+              <Input
+                style={styles.input}
+                value={detail.among}
+                keyboardType="numeric"
+                onChangeText={(value) => updateField('among', value)}
+              />
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left style={styles.dateLabel}>
+              <Text>Time Range</Text>
+            </Left>
+            <Right>
+              <DateRangePicker
+                onChange={(dates) => {
+                  if (dates.startDate) {
+                    updateField('fromDate', dates.startDate);
+                  }
+                  if (dates.endDate) {
+                    updateField('toDate', dates.endDate);
+                  }
+                }}
+                endDate={detail.toDate}
+                startDate={detail.fromDate}
+                displayedDate={moment()}
+                range
+                containerStyle={styles.containerStyle}
+              >
+                <Text>
+                  {`${moment(detail.fromDate).format('DD/MM/YYYY')} - ${moment(detail.toDate).format('DD/MM/YYYY')}`}
+                </Text>
+              </DateRangePicker>
+            </Right>
+          </ListItem>
+        </List>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    minHeight: '100%'
   },
   header: {
 
@@ -187,9 +187,9 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: 'black',
-    width: 100,
     marginLeft: 10,
-    height: 40
+    height: 40,
+    borderRadius: 5,
   },
   amongRow: {
     height: 60
@@ -197,6 +197,6 @@ const styles = StyleSheet.create({
   amongInput: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 0.5
+    flex: 1
   }
 });

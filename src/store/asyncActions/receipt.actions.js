@@ -123,7 +123,7 @@ export const deleteReceipt = (
 ) => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    axiosInstance.delete(`${routeEnum.RECEIPTS}${id}`);
+    await axiosInstance.delete(`${routeEnum.RECEIPTS}${id}`);
     dispatch(setLoading(false));
     dispatch(setMessage('Success'));
     dispatch(fetchListReceipts());

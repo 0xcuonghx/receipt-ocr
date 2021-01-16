@@ -3,7 +3,7 @@ import React from 'react';
 import {
   View, ListItem, List, Input, Text, Icon, Picker
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import HeaderCustom from '../../../Common/HeaderCustom';
 import AlertCustom from '../../../Common/Alert';
@@ -23,7 +23,7 @@ export default function Detail(props) {
 
   const [detail, setDetail] = React.useState({
     id: category?.id || '',
-    name: category?.name || 'name',
+    name: category?.name || '',
     icon: category?.icon || ''
   });
   const updateField = React.useCallback((key, value) => {
@@ -61,52 +61,55 @@ export default function Detail(props) {
   }, [navigation]);
 
   return (
-    <View>
-      <HeaderCustom
-        title="Categories"
-        right={(
-          <>
-            <Icon name="done" type="MaterialIcons" onPress={saved} />
-            {!isAdd && <Icon name="delete" type="MaterialIcons" onPress={deleted} />}
-          </>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.wrapper}>
+        <HeaderCustom
+          title="Categories"
+          right={(
+            <>
+              <Icon name="done" type="MaterialIcons" onPress={saved} />
+              {!isAdd && <Icon name="delete" type="MaterialIcons" onPress={deleted} />}
+            </>
         )}
-        left={(<Icon name="arrow-back" type="MaterialIcons" onPress={backToList} />)}
-      />
-      <List>
-        <ListItem>
-          <Text style={styles.title}>
-            Icon
-          </Text>
-          <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="arrow-down" />}
-            style={styles.categoryPicker}
-            placeholder="Select category"
-            placeholderIconColor="#007aff"
-            selectedValue={detail.icon}
-            onValueChange={(value) => updateField('icon', value)}
-          >
-            {icons.map((o) => (
-              <Picker.Item
-                key={o}
-                label={<Icon name={o} />}
-                value={o}
-              />
-            ))}
-          </Picker>
-        </ListItem>
-        <ListItem>
-          <Text style={styles.title}>
-            Name
-          </Text>
-          <Input
-            style={styles.input}
-            value={detail.name}
-            onChangeText={(value) => updateField('name', value)}
-          />
-        </ListItem>
-      </List>
-    </View>
+          left={(<Icon name="arrow-back" type="MaterialIcons" onPress={backToList} />)}
+        />
+        <List>
+          <ListItem>
+            <Text style={styles.title}>
+              Icon
+            </Text>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              style={styles.categoryPicker}
+              placeholder="Select category"
+              placeholderIconColor="#007aff"
+              selectedValue={detail.icon}
+              onValueChange={(value) => updateField('icon', value)}
+            >
+              {icons.map((o) => (
+                <Picker.Item
+                  key={o}
+                  label={<Icon name={o} />}
+                  value={o}
+                />
+              ))}
+            </Picker>
+          </ListItem>
+          <ListItem>
+            <Text style={styles.title}>
+              Name
+            </Text>
+            <Input
+              style={styles.input}
+              value={detail.name}
+              onChangeText={(value) => updateField('name', value)}
+              placeholder="Enter category name"
+            />
+          </ListItem>
+        </List>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -118,12 +121,18 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: 'black',
-    height: 40
+    height: 40,
+    borderRadius: 5,
+    marginRight: 20
   },
   categoryPicker: {
     borderWidth: 1,
     borderColor: 'black',
     width: 150,
     height: 40
+  },
+  wrapper: {
+    minHeight: '100%',
+    flex: 1
   }
 });

@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 20000
+  timeout: 30000
 });
 
 // do something when request
@@ -26,10 +26,10 @@ axiosInstance.interceptors.request.use(async (config) => {
 // do something when response
 axiosInstance.interceptors.response.use((response) => {
   // if status code 2xx
-  console.log('----------------------');
-  console.log(JSON.stringify(response));
   if (response.status === 200) {
     if (response?.data?.message !== 'successful' && response?.data?.message !== 'success') {
+      console.log('----------------------');
+      console.log(JSON.stringify(response));
       throw Error('Something went wrong');
     }
     return response.data.result;

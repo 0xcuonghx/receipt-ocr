@@ -36,10 +36,10 @@ export const login = () => async (dispatch) => {
     dispatch(setLoading(true));
     const { type, user } = await GoogleSignIn.signInAsync();
     if (type === 'success') {
+      await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
+      await dispatch(createUser(user));
       dispatch(setLoading(false));
       dispatch(loginSuccess(user));
-      await asyncStorageUtils.setItem(AccessToken, user.auth.accessToken);
-      dispatch(createUser(user));
     }
     dispatch(setLoading(false));
   } catch (error) {

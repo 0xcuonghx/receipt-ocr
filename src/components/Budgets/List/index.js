@@ -4,12 +4,12 @@ import {
   Right, Button, Icon
 } from 'native-base';
 import { StyleSheet, View, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+  
 import moment from 'moment';
 import IconTest from '../../../../assets/images/budget.png';
 import HeaderCustom from '../../Common/HeaderCustom';
 import dataUtils from '../../../utils/dateUtils';
-import { acc } from 'react-native-reanimated';
 
 export default function ListBudget(props) {
   const { fetchBudgets, budgets=[] } = props;
@@ -56,6 +56,12 @@ export default function ListBudget(props) {
       setShowMap(newShowMap)
     }
   }, [showMap]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+        refresh();
+    }, [refresh])
+  );
 
   const listItem = React.useCallback((item) => {
     const isShow = showMap.has(item?.id);

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import { isEmpty } from 'lodash';
 import HeaderCustom from '../Common/HeaderCustom';
 import SelectPicker from './SelectPicker';
 import { logout } from '../../store/asyncActions/user.actions';
@@ -48,7 +49,7 @@ export default function Setting() {
       <HeaderCustom title="Setting" />
       <Content>
         <View style={styles.avatar}>
-          {user.photoURL && <Thumbnail large source={{ uri: user.photoURL }} />}
+          {!isEmpty(user.photoURL) && <Thumbnail large source={{ uri: user.photoURL }} />}
           <Text>{user?.email || ''}</Text>
           <Text>{user?.displayName || ''}</Text>
         </View>

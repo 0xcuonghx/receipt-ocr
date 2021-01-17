@@ -12,6 +12,8 @@ import axiosInstance from '../../axiosInstance';
 import routeEnum from '../../axiosInstance/apiRoute';
 import dateUtils from '../../utils/dateUtils';
 
+const MAX_NAME_LENGTH = 50;
+
 export const fetchListReceipts = (
   params
 ) => async (dispatch) => {
@@ -54,7 +56,10 @@ export const createReceipt = (
       merchant: params.merchant,
       category_id: params.category_id,
       total: Number(params.total),
-      products: params.products.map((o) => ({ name: o.name, price: Number(o.price) })),
+      products: params.products.map((o) => ({
+        name: o.name.slice(0, MAX_NAME_LENGTH),
+        price: Number(o.price)
+      })),
       url_image: params.url_image || ''
     };
     dispatch(setLoading(true));

@@ -3,7 +3,7 @@ import moment from 'moment';
 import {
   Container, Tab, Tabs, Separator, ListItem, Content, Body, Right, Text, View, Thumbnail, Left, Icon
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import dateUtils from '../../../utils/dateUtils';
 
 import HeaderCustom from '../../Common/HeaderCustom';
@@ -74,6 +74,12 @@ export default function ListReceipt(props) {
       toDate: moment.unix(currentMonth).endOf('month').toISOString()
     });
   }, [fetchReceipts, currentMonth]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
   return (
     <Container>
       <HeaderCustom

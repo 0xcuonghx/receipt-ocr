@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Container, Icon, ListItem, Left, Body, Text, Right
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderCustom from '../../Common/HeaderCustom';
 
@@ -44,6 +44,12 @@ export default function Categories(props) {
   const refresh = React.useCallback(() => {
     fetchCategories();
   }, [fetchCategories]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
   return (
     <Container>
       <HeaderCustom

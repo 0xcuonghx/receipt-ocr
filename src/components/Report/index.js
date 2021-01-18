@@ -6,6 +6,7 @@ import {
 import {
   StyleSheet, ScrollView
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import dataUtils from '../../utils/dateUtils';
 import HeaderCustom from '../Common/HeaderCustom';
 import BarChartReport from './BarChart';
@@ -59,6 +60,24 @@ export default function Report(props) {
   const pieData = React.useMemo(
     () => dataByCategory.map((o) => ({ name: o.category, value: o.among, color: colorRandom() })),
     [dataByCategory, colorRandom]
+  );
+
+  const refresh = React.useCallback(() => {
+    setSelectedMonth(currentMonth);
+    fetchByWeek({
+      fromDate: moment.unix(currentMonth).startOf('month').toISOString(),
+      toDate: moment.unix(currentMonth).endOf('month').toISOString()
+    });
+    fetchByCategory({
+      fromDate: moment.unix(currentMonth).startOf('month').toISOString(),
+      toDate: moment.unix(currentMonth).endOf('month').toISOString()
+    });
+  }, [fetchByCategory, fetchByWeek, currentMonth]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refresh();
+    }, [refresh])
   );
   return (
     <Container>
